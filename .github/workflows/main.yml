@@ -53,7 +53,7 @@ jobs:
                   wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
                   mkdir sf
                   tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
-                  echo "sf/bin/sf" >> $GITHUB_PATH
+                  echo "sf/bin/" >> $GITHUB_PATH
                   sf/bin/sf version
                   
             # Prior to setting up this workflow, you have to create a Github Secret
@@ -80,4 +80,4 @@ jobs:
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30
+                  sf/bin/sf project deploy validate -d force-app/ -c -l RunLocalTests -w 30
