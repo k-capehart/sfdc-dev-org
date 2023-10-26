@@ -53,8 +53,9 @@ jobs:
                   wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
                   mkdir sf
                   tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
-                  echo "$HOME/sf/bin" >> $GITHUB_PATH
+                  echo "sf/bin" >> $GITHUB_PATH
                   sf/bin/sf version
+                  sf version
  
                   
             # Prior to setting up this workflow, you have to create a Github Secret
@@ -77,8 +78,8 @@ jobs:
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to Integration Org'
-              run: sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+              run: sf/bin/sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
 
             - name: 'Validate'
               run: |
-                  sf project deploy start -d force-app/ -c -l RunLocalTests -w 30
+                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30
