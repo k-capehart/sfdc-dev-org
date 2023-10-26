@@ -55,7 +55,6 @@ jobs:
                   tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
                   echo "sf/bin/sf" >> $GITHUB_PATH
                   sf/bin/sf version
-                  sf version
                   
             # Prior to setting up this workflow, you have to create a Github Secret
             # that contains the sfdx url of the integration/qa org.
