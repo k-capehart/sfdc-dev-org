@@ -3,7 +3,7 @@
 Personal SFDC Dev Org for testing configuration and code
 =======
 # Prerequisites
-- Dowload Salesforce CLI with npm: 'npm install @salesforce/cli --global'
+- Dowload SF CLI with npm: `npm install @salesforce/cli --global`
     - More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos
     - Moving from SFDX CLI to SF CLI: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm
 - Install Salesforce VS Code Extensions: https://developer.salesforce.com/tools/vscode
