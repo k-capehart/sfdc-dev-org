@@ -1,0 +1,83 @@
+# Unique name for this workflow
+name: Validate PR on develop branch
+
+# Definition when the workflow should run
+on:
+    # The workflow will run whenever an event happens on a pull request
+    pull_request:
+      # The events are that a PR is opened, or when a commit is pushed
+      # to a branch that has an existing pull request
+      types: [opened, synchronize]
+      # We only care about changes to the force-app directory, which is the
+      # root directory of the sfdx project. This prevents the job from running
+      # when changing non-salesforce files (like this yml file).
+      paths:
+        - 'force-app/**'
+
+# Jobs to be executed when the above conditions are met
+jobs:
+    # This is the name of the job. You can give it whatever name you want
+    validate-deployment-on-develop-org:
+        # As mentioned in the blog post, this job runs inside a VM. Here we
+        # can specify which OS this VM should run on. 
+        # In this case, we are going to run our commands on the latest version
+        # of ubuntu
+        runs-on: ubuntu-latest
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        steps:
+            # Now we install nodejs in the VM, and specify version 14
+            - uses: actions/setup-node@v3
+              with:
+                node-version: '14'
+
+            # The idea is that the VM can access your remote repository
+            # because your repository is an sfdx project.
+            # This is a default action that allows us to enter the root 
+            # directory of the repository
+
+            # Make sure to specify fetch-depth:0. This allows us to
+            # access previous commits that have been pushed to the repository.
+
+            # We'll need this later when we try to figure out which metadata has 
+            # changed between commits, so that we can only deploy that metadata
+            # to the destination org
+
+            - name: 'Checkout source code'
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+                  
+            # Now Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
+                  mkdir sf
+                  tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
+                  echo "sf/bin/" >> $GITHUB_PATH
+                  sf/bin/sf version
+                  
+            # Prior to setting up this workflow, you have to create a Github Secret
+            # that contains the sfdx url of the integration/qa org.
+
+            # The steps to generate the url are here 
+            # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_auth_sfdxurl.htm
+
+            # This URL can then be used with the sfdx auth:sfdxurl:store to authenticate
+            # the sfdx project in the repositry, against the org from which the URL
+            # was generated from. This works just like that, there's no need to create
+            # connected apps or any else. 
+
+            # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL
+            # so here we store the URL into a text file
+            - name: 'Populate auth file with SFDX_URL secret of integration org'
+              shell: bash
+              run: |
+                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
+
+            # Authenticate to org using the URL stored in the text file
+            - name: 'Authenticate to Integration Org'
+              run: sf/bin/sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+
+            - name: 'Validate'
+              run: |
+                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30
