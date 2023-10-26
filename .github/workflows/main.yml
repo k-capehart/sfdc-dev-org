@@ -80,4 +80,4 @@ jobs:
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy validate -d force-app/ -c -l RunLocalTests -w 30
+                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30
