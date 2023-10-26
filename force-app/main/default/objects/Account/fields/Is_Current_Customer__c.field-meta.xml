@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Current_Customer__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Checkbox to denote if an account is an active customer or not</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checkbox to denote if an account is an active customer or not</inlineHelpText>
+    <label>Is Current Customer</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>
