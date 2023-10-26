@@ -1,23 +1,28 @@
-<<<<<<< HEAD
+
 # sfdc-dev-org
 Personal SFDC Dev Org for testing configuration and code
 =======
-# Salesforce DX Project: Next Steps
+# Prerequisites
+- Dowload Salesforce CLI with npm: 'npm install @salesforce/cli --global'
+    - More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos
+    - Moving from SFDX CLI to SF CLI: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm
+- Install Salesforce VS Code Extensions: https://developer.salesforce.com/tools/vscode
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+# First Time Setup
+- Authenticate in Salesforce environment
+    - `sfdx-dev-org % sf org login web -a prod -d -r [production url]`
+    - `sfdx-dev-org % sf org login web -a stage -r [full sandbox url]`
 
-## How Do You Plan to Deploy Your Changes?
+# Setup Scratch Org
+Scratch Orgs are temporary Salesforce environments that are used for development. They are spun up based on a configuration file and contain no metadata upon creation.
+- Create a Scratch Org: `sf org create scratch -f config/project-scratch-def.json -a [alias] -d -w 30`
+- Open default org: `sf org open`
+- Push local metadata to org: `sf project deploy start`
+    - Ideally, you'll do this during setup to get all metadata from sfdc repo into the scratch org
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+# sf cli commands
+[link to documentation]
 
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
->>>>>>> 3c04df3 (initial commit)
+# Deploy to Sandbox and Production
+- .github/workflows/main.yml validates the package when a PR is opened
+- .github/workflows/release.yml deploys the package when a Release is published
