@@ -26,3 +26,4 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 # Deploy to Sandbox and Production
 - .github/workflows/main.yml validates the package when a PR is opened
 - .github/workflows/release.yml deploys the package when a Release is published
+- Salesforce authorization URL is stored in: SFDX_INTEGRATION_URL
