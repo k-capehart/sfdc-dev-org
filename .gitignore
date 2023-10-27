@@ -45,3 +45,5 @@ $RECYCLE.BIN/
 **/venv/
 
 force-app/main/default/appMenus/
+.husky/
+.vscode/
