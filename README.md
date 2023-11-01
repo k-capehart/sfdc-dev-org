@@ -10,8 +10,7 @@ Personal SFDC Dev Org for testing configuration and code
 
 # First Time Setup
 - Authenticate in Salesforce environment
-    - `sfdx-dev-org % sf org login web -a prod -d -r [production url]`
-    - `sfdx-dev-org % sf org login web -a stage -r [full sandbox url]`
+    - `sf org login web -a [alias] -d -r [url]`
 
 # Setup Scratch Org
 Scratch Orgs are temporary Salesforce environments that are used for development. They are spun up based on a configuration file and contain no metadata upon creation.
