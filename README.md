@@ -23,7 +23,8 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | Command                   | Description                    |
 | :------------------------ | :----------------------------- |
 | sf org open	            | Open your default scratch org, or another specified org, in a browser.  |
-| sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files. |                            
+| sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files. |       
+| sf project retrieve preview | Preview a retrieval to see what will be retrieved from the org, the potential conflicts, and the ignored files. |
 | sf project deploy start	| Deploy source to an org.
 | sf project retrieve start	| Retrieve source from an org. 
 | sf project deploy validate| Validate a metadata deployment without actually executing it.
