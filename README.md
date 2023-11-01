@@ -21,16 +21,20 @@ Scratch Orgs are temporary Salesforce environments that are used for development
     - Ideally, you'll do this during setup to get all metadata from sfdc repo into the scratch org
 
 # sf cli commands
-sf org create scratch	        Create a scratch org.
-sf org open	                    Open your default scratch org, or another specified org, in a browser.                                 
-sf project deploy preview	    Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files.
-sf project deploy start	        Deploy source to an org.
-sf project retrieve start	    Retrieve source from an org. 
-sf project deploy validate 	    Validate a metadata deployment without actually executing it.
-sf search	                    Search for a command.
-sf scanner run	                Scan a codebase with a selection of rules
-sf org create shape	            Create a scratch org configuration (shape) based on the specified source org.
-sf org login web	            Log in to a Salesforce org using the web server flow.
+| Command                   | Description                    |
+| :------------------------ | :----------------------------- |
+| sf org open	            | Open your default scratch org, or another specified org, in a browser.  |
+| sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files. |                            
+| sf project deploy start	| Deploy source to an org.
+| sf project retrieve start	| Retrieve source from an org. 
+| sf project deploy validate| Validate a metadata deployment without actually executing it.
+| sf search	                | Search for a command.
+| sf scanner run	        | Scan a codebase with a selection of rules
+| sf org create shape	    | Create a scratch org configuration (shape) based on the specified source org.
+| sf org login web	        | Log in to a Salesforce org using the web server flow.
+| sf org create scratch     | Create a scratch org.
+
+
 
 
 
