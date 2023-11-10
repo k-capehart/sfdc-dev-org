@@ -33,6 +33,8 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | sf org create shape	    | Create a scratch org configuration (shape) based on the specified source org.
 | sf org login web	        | Log in to a Salesforce org using the web server flow.
 | sf org create scratch     | Create a scratch org.
+| sf org display            | Display information about an org. Use --verbose to display the sfdxAuthUrl property.
+| sf auth sfdxurl store     | Authorize an org using a Salesforce DX authorization URL stored in a file.
 
 
 
