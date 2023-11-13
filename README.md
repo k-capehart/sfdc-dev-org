@@ -6,9 +6,11 @@ Personal SFDC Dev Org for testing configuration and code
 - Dowload SF CLI with npm: `npm install @salesforce/cli --global`
     - More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos
     - Moving from SFDX CLI to SF CLI: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm
-- Install Salesforce VS Code Extensions: https://marketplace.visualstudio.com/items?itemName=salesforce.salesforcedx-vscode
+- [Java JDK](https://www.oracle.com/java/technologies/downloads/#jdk21-mac)
+- [VS Code Salesforce Extension Pack](https://developer.salesforce.com/tools/vscode)
 
 # First Time Setup
+- [Java Setup](https://developer.salesforce.com/tools/vscode/en/vscode-desktop/java-setup)
 - Authenticate in Salesforce environment
     - `sf org login web -a [alias] -d -r [url]`
 
@@ -22,11 +24,11 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 # sf cli commands
 | Command                   | Description                    |
 | :------------------------ | :----------------------------- |
-| sf org open	            | Open your default scratch org, or another specified org, in a browser.  |
-| sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files. |       
-| sf project retrieve preview | Preview a retrieval to see what will be retrieved from the org, the potential conflicts, and the ignored files. |
+| sf org open	            | Open your default scratch org, or another specified org, in a browser.
+| sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files.      
+| sf project retrieve preview | Preview a retrieval to see what will be retrieved from the org, the potential conflicts, and the ignored files.
 | sf project deploy start	| Deploy source to an org.
-| sf project retrieve start	| Retrieve source from an org. 
+| sf project retrieve start	| Retrieve source from an org.
 | sf project deploy validate| Validate a metadata deployment without actually executing it.
 | sf search	                | Search for a command.
 | sf scanner run	        | Scan a codebase with a selection of rules
