@@ -31,7 +31,7 @@ jobs:
             - name: 'Set SFDX_ACCESS_TOKEN environment variable'
               shell: bash
               run: |
-                  export SF_ACCESS_TOKEN=${{ secrets.SFDX_ACCESS_TOKEN }}
+                  export SFDX_ACCESS_TOKEN=${{ secrets.SFDX_ACCESS_TOKEN }}
 
             - name: 'Authenticate to Dev Org'
               run: sf/bin/sf org login access-token -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com -s -a dev -p
