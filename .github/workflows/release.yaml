@@ -26,14 +26,14 @@ jobs:
                   echo "sf/bin/" >> $GITHUB_PATH
                   sf/bin/sf version
                   
-            - name: 'Set SF_ACCESS_TOKEN environment variable'
+            - name: 'Set SFDX_ACCESS_TOKEN environment variable'
               shell: bash
               run: |
-                  export SF_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN}}
+                  export SF_ACCESS_TOKEN=${{ secrets.SFDX_ACCESS_TOKEN}}
 
             - name: 'Authenticate to Dev Org'
               run: sf/bin/sf org login access-token -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com -s -a dev -p
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30
+                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30 -o dev
