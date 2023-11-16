@@ -38,4 +38,4 @@ jobs:
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev
+                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o kyleacapehart@gmail.com.dev
