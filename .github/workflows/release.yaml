@@ -29,10 +29,10 @@ jobs:
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
+                  export SFDX_ACCESS_TOKEN=${{ secrets.SFDX_INTEGRATION_URL}}
 
             - name: 'Authenticate to Integration Org'
-              run: sf/bin/sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+              run: sf/bin/sf auth accesstoken store -s -a integration
 
             - name: 'Validate'
               run: |
