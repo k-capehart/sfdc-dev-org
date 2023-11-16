@@ -34,8 +34,8 @@ jobs:
                   export SFDX_ACCESS_TOKEN=${{ secrets.SFDX_INTEGRATION_URL}}
 
             - name: 'Authenticate to Dev Org'
-              run: sf/bin/sf auth accesstoken store -s -a integration -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com
+              run: sf/bin/sf auth accesstoken store -s -a dev -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30
+                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev
