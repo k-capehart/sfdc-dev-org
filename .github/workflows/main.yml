@@ -28,14 +28,13 @@ jobs:
                   echo "sf/bin/" >> $GITHUB_PATH
                   sf/bin/sf version
             
-            - name: 'Populate auth file with SFDX_URL secret of integration org'
+            - name: 'Authenticate using SF_ACCESS_TOKEN'
               shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
-
-            - name: 'Authenticate to Integration Org'
-              run: sf/bin/sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+                  export SF_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}    
+                  export SFDX_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}
+                  sf/bin/sf org login access-token -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com -s -a dev -p
 
             - name: 'Validate'
               run: |
-                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30
+                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev
