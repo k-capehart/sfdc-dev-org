@@ -28,13 +28,13 @@ jobs:
                   echo "sf/bin/" >> $GITHUB_PATH
                   sf/bin/sf version
             
-            - name: 'Populate auth file with SFDX_URL secret of integration org'
+            - name: 'Set SFDX_ACCESS_TOKEN environment variable'
               shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
+                  export SFDX_ACCESS_TOKEN=${{ secrets.SFDX_INTEGRATION_URL}}
 
-            - name: 'Authenticate to Integration Org'
-              run: sf/bin/sf auth sfdxurl store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+            - name: 'Authenticate to Dev Org'
+              run: sf/bin/sf auth accesstoken store -s -a integration
 
             - name: 'Validate'
               run: |
