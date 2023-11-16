@@ -29,7 +29,8 @@ jobs:
             - name: 'Authenticate using SF_ACCESS_TOKEN'
               shell: bash
               run: |
-                  export SF_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}
+                  export SF_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}    
+                  export SFDX_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}
                   sf/bin/sf org login access-token -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com -s -a dev -p
 
             - name: 'Validate'
