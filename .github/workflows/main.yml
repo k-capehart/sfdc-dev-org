@@ -1,33 +1,29 @@
 name: Validate PR on develop branch
 
 on:
-    pull_request:
-      types: [opened, synchronize]
-      paths:
-        - 'force-app/**'
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'force-app/**'
 
 jobs:
-    validate-deployment-on-develop-org:
-        runs-on: ubuntu-latest
-        container:
-          image: salesforce/cli:latest-slim
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        steps:
-            - uses: actions/setup-node@v3
-              with:
-                node-version: '14'
-            
-            - name: 'Checkout source code'
-              uses: actions/checkout@v3
-              with:
-                fetch-depth: 0
-            
-            - name: 'Authenticate using SFDX_AUTH_URL'
-              shell: bash
-              run: | 
-                  echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-                  sf org login sfdx-url -s -a dev -f sfdx_auth
+  validate-deployment-on-develop-org:
+    runs-on: ubuntu-latest
+    container:
+      image: salesforce/cli:latest-slim
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:      
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: 'Authenticate using SFDX_AUTH_URL'
+        shell: bash
+        run: | 
+          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
+          sf org login sfdx-url -s -a dev -f sfdx_auth
 
-            - name: 'Validate'
-              run: |
-                  sf/bin/sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev
+      - name: 'Validate'
+        run: |
+          sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev
