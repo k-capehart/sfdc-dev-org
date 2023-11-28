@@ -21,10 +21,15 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 - Push local metadata to org: `sf project deploy start`
     - Ideally, you'll do this during setup to get all metadata from sfdc repo into the scratch org
 
+# Validate and Deploy
+- .github/workflows/main.yml validates the package when a PR is opened
+- .github/workflows/release.yml deploys the package when a Release is published
+- Salesforce authorization URL is stored in: SFDX_AUTH_URL
+
 # sf cli commands
 | Command                   | Description                    |
 | :------------------------ | :----------------------------- |
-| sf org open	            | Open your default scratch org, or another specified org, in a browser.
+| sf org open	            | Open your default org in a browser.
 | sf project deploy preview | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files.      
 | sf project retrieve preview | Preview a retrieval to see what will be retrieved from the org, the potential conflicts, and the ignored files.
 | sf project deploy start	| Deploy source to an org.
@@ -37,12 +42,3 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | sf org create scratch     | Create a scratch org.
 | sf org display            | Display information about an org. Use --verbose to display the sfdxAuthUrl property.
 | sf auth sfdxurl store     | Authorize an org using a Salesforce DX authorization URL stored in a file.
-
-
-
-
-
-# Deploy to Sandbox and Production
-- .github/workflows/main.yml validates the package when a PR is opened
-- .github/workflows/release.yml deploys the package when a Release is published
-- Salesforce authorization URL is stored in: SFDX_INTEGRATION_URL
