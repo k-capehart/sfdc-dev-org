@@ -1,38 +1,27 @@
 name: Deploy project for Release
 
 on:
-    release:
-      types: [published]
+  release:
+    types: [published]
 
 jobs:
-    deploy-release:
-        runs-on: ubuntu-latest
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        steps:
-            - uses: actions/setup-node@v3
-              with:
-                node-version: '14'
+  deploy-release:
+    runs-on: ubuntu-latest
+    container:
+      image: salesforce/cli:latest-slim
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+            
+      - name: 'Authenticate using SF_ACCESS_TOKEN'
+        shell: bash
+        run: |
+          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
+          sf org login sfdx-url -s -a dev -f sfdx_auth
 
-            - name: 'Checkout source code'
-              uses: actions/checkout@v3
-              with:
-                fetch-depth: 0
-                  
-            - name: 'Install Salesforce CLI'
-              run: |
-                  wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
-                  mkdir sf
-                  tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
-                  echo "sf/bin/" >> $GITHUB_PATH
-                  sf/bin/sf version
-                  
-            - name: 'Authenticate using SF_ACCESS_TOKEN'
-              shell: bash
-              run: |
-                  export SF_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}    
-                  export SFDX_ACCESS_TOKEN=${{ secrets.SF_ACCESS_TOKEN }}
-                  sf/bin/sf org login access-token -r https://gmailcomdev116-dev-ed.develop.my.salesforce.com -s -a dev -p
-
-            - name: 'Validate'
-              run: |
-                  sf/bin/sf project deploy start -d force-app/ -c -l RunLocalTests -w 30 -o dev
+      - name: 'Validate'
+        run: |
+          sf project deploy start -d force-app/ -c -l RunLocalTests -w 30 -o dev
