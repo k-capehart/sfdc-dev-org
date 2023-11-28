@@ -9,6 +9,8 @@ on:
 jobs:
     validate-deployment-on-develop-org:
         runs-on: ubuntu-latest
+        container:
+          image: salesforce/cli:latest-slim
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
             - uses: actions/setup-node@v3
