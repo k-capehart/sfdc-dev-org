@@ -1,4 +1,4 @@
-public without sharing class AccountsSelector extends fflib_SObjectSelector {
+public with sharing class AccountsSelector extends fflib_SObjectSelector {
     public List<Schema.SObjectField> getSObjectFieldList() {
         return new List<Schema.SObjectField> {
             Account.Name,
