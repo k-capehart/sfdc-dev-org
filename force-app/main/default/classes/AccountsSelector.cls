@@ -1,4 +1,4 @@
-public class AccountsSelector extends fflib_SObjectSelector {
+public without sharing class AccountsSelector extends fflib_SObjectSelector {
     public List<Schema.SObjectField> getSObjectFieldList() {
         return new List<Schema.SObjectField> {
             Account.Name,
@@ -22,7 +22,7 @@ public class AccountsSelector extends fflib_SObjectSelector {
             newQueryFactory()
                 .selectFields(fields)
                 .setCondition('Id in :idSet')
-                .toSOQL()   
+                .toSOQL()
         );
     }
 }
