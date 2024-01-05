@@ -17,8 +17,8 @@ public class AccountsTriggerHandler extends fflib_SObjectDomain {
     
     public override void onValidate() {
         for(Account acc: (List<Account>) Records) {
-            if(acc.Ownership == null) {
-                acc.Ownership.addError('You must designate ownership');
+            if(acc.Description == null) {
+                acc.Description.addError('You must provide a description');
             }
         }
     }
