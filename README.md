@@ -23,6 +23,13 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 - .github/workflows/release.yml deploys the package when a Release is published
 - Salesforce authorization URL is stored in: SFDX_AUTH_URL
 
+# Trigger Framework
+- Implements trigger framework from https://github.com/kevinohara80/sfdc-trigger-framework
+- Modified to include additional virtual methods
+    - `isDisabled()`: Runs before trigger context methods, and skips if trigger is disabled. Implemented through Custom Settings.
+    - `applyDefaults()`: Executes before beforeInsert().
+    - `validate()`: Exectutes before afterInsert() and afterUpdate().
+
 # Makefile
 | Command | Description|
 | :-------------------------- | :----------------------|

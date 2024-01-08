@@ -39,7 +39,11 @@ public virtual class TriggerHandler {
       if(!validateRun()) {
         return;
       }
-  
+      
+      if(this.isDisabled()) {
+        return;
+      }
+
       addToLoopCount();
   
       // dispatch to the correct handler method
@@ -177,48 +181,34 @@ public virtual class TriggerHandler {
     // Custom solution to include isDisabled(), applyDefaults(), and validate()
     @TestVisible
     protected virtual void handleBeforeInsert(){
-        if(!isDisabled()) {
-            applyDefaults();
-            beforeInsert();
-        }
+      applyDefaults();
+      beforeInsert();
     }
     @TestVisible
     protected virtual void handleBeforeUpdate(){
-        if(!isDisabled()) {
-            beforeUpdate();
-        }
+      beforeUpdate();
     }
     @TestVisible
     protected virtual void handleBeforeDelete(){
-        if(!isDisabled()) {
-            beforeDelete();
-        }
+      beforeDelete();
     }
     @TestVisible
     protected virtual void handleAfterInsert(){
-        if(!isDisabled()) {
-            validate();
-            afterInsert();
-        }
+      validate();
+      afterInsert();
     }
     @TestVisible
     protected virtual void handleAfterUpdate(){
-        if(!isDisabled()) {
-            validate();
-            afterUpdate();
-        }
+      validate();
+      afterUpdate();
     }
     @TestVisible
     protected virtual void handleAfterDelete(){
-        if(!isDisabled()) {
-            afterDelete();
-        }
+      afterDelete();
     }
     @TestVisible
     protected virtual void handleAfterUndelete(){
-        if(!isDisabled()) {
-            afterUndelete();
-        }
+      afterUndelete();
     }
 
     // context-specific methods for override

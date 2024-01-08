@@ -7,10 +7,10 @@ open:
 	sf org open
 
 push: 
-	sf project deploy start
+	sf project deploy start --ignore-conflicts
 
 pull: 
-	sf project retrieve start
+	sf project retrieve start --ignore-conflicts
 
 diff: 
 	sf project deploy preview
