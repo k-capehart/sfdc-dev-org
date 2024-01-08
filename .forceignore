@@ -13,3 +13,7 @@ package.xml
 
 **/appMenus/**
 **/profiles/**
+**/listviews/**
+**/reports/**
+**/dashboards/**
+**/reportTypes/**
