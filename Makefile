@@ -17,4 +17,4 @@ diff:
 	sf project retrieve preview
 
 test:
-	sf apex run test --test-level RunLocalTests -y -c -w 30
+	sf apex run test --test-level RunLocalTests -y -w 30
