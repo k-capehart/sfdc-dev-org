@@ -1,4 +1,4 @@
-.PHONY: create open push pull diff
+.PHONY: create open push pull diff test
 
 create: 
 	sf org create scratch -f config/project-scratch-def.json -a $(ORG) -d -w 30
@@ -15,3 +15,6 @@ pull:
 diff: 
 	sf project deploy preview
 	sf project retrieve preview
+
+test:
+	sf apex run test --test-level RunLocalTests -y -c -w 30
