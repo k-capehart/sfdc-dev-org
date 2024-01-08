@@ -1,4 +1,4 @@
-.PHONY: build open push pull diff
+.PHONY: create open push pull diff
 
 create: 
 	sf org create scratch -f config/project-scratch-def.json -a $(ORG) -d -w 30
