@@ -26,9 +26,9 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 # Trigger Framework
 - Implements trigger framework from https://github.com/kevinohara80/sfdc-trigger-framework
 - Modified to include additional virtual methods
-    - `isDisabled()`: Runs before trigger context methods, and skips if trigger is disabled. Implemented through Custom Settings.
+    - `isDisabled()`: If true, skips trigger methods. Implemented through Custom Settings for easy toggling org wide.
     - `applyDefaults()`: Executes before beforeInsert().
-    - `validate()`: Exectutes before afterInsert() and afterUpdate().
+    - `validate()`: Executes before afterInsert() and afterUpdate().
 
 # Makefile
 | Command | Description|
