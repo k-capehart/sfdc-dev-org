@@ -14,7 +14,7 @@ pull:
 
 diff: 
 	sf project deploy preview
-	sf project retrieve preview
+	sf project retrieve preview --concise
 
 test:
 	sf apex run test --test-level RunLocalTests -y -w 30
