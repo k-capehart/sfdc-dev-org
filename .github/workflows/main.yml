@@ -21,8 +21,7 @@ jobs:
       - name: 'Authenticate using SFDX_AUTH_URL'
         shell: bash
         run: | 
-          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-          sf org login sfdx-url -s -a dev -f sfdx_auth
+          echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u -
 
       - name: 'Validate'
         run: |
