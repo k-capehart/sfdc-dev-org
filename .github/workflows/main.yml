@@ -21,6 +21,7 @@ jobs:
       - name: 'Authenticate using SFDX_AUTH_URL'
         shell: bash
         run: | 
+          sf config set disable-telemetry=true --global
           echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u -
 
       - name: 'Validate'
