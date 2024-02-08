@@ -4,7 +4,7 @@ private with sharing class AccountHelper_Test {
     @isTest
     private static void testSetSLA() {
         List<Account> accs = TestDataFactory.createTestAccounts(4, false);
-        accs[0].AnnualRevenue = 10;
+        accs[0].AnnualRevenue = 100;
         accs[1].AnnualRevenue = 10000;
         accs[2].AnnualRevenue = 100000;
         accs[3].AnnualRevenue = 1000000;
