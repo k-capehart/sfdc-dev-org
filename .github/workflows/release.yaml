@@ -8,7 +8,7 @@ jobs:
   deploy-release:
     runs-on: ubuntu-latest
     container:
-      image: salesforce/cli:latest-slim
+      image: salesforce/cli:latest-full
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: 'Checkout source code'
