@@ -13,7 +13,7 @@ pull:
 	sf project retrieve start --ignore-conflicts
 
 diff: 
-	sf project deploy preview
+	sf project deploy preview --concise
 	sf project retrieve preview --concise
 
 test:
