@@ -41,6 +41,7 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | `make pull` | Retrieve changes from org.
 | `make diff` | Display diff between local and org.
 | `make test` | Run apex tests and wait for result.
+| `make apex_trigger TARGET=[Comma separated list of SObjects]` | Create Apex trigger, handler class, helper class, test class, and custom setting 
 
 # sf cli commands
 | Command                       | Description                    |
