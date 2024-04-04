@@ -1,0 +1,25 @@
+#!/opt/homebrew/bin/expect -f
+
+set sobj [lindex $argv 0];
+
+spawn sf schema generate field -l $sobj -o force-app/main/default/objects/BypassAutomation__c
+
+expect "API name (must end in __c)"
+send -- "\n"
+
+expect "Field type:"
+send -- "\033\[B\n"
+
+expect "Default checkbox value:"
+send -- "\n"
+
+expect "Description (great developers write great descriptions):"
+send -- "Skips automation\n"
+
+expect "Help text (the text displayed when users hover over the Info icon next to this field):"
+send -- "Skips automation\n"
+
+expect "Security classification (how sensitive is this field's content):"
+send -- "\n"
+
+expect eof
