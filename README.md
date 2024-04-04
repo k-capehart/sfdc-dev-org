@@ -1,11 +1,11 @@
 
 # sfdc-dev-org
-SFDC Dev Org for testing configuration and code
+Salesforce repository template
 =======
 # Prerequisites
-- Dowload SF CLI with npm: `npm install @salesforce/cli --global`
-    - More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos
-    - Moving from SFDX CLI to SF CLI: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm
+- Dowload SF CLI: `npm install @salesforce/cli --global`
+    - [More information on installation](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos)
+    - [Moving from SFDX CLI to SF CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm)
 - [VS Code Salesforce Extension Pack](https://developer.salesforce.com/tools/vscode)
 - [Java Setup for VS Code](https://developer.salesforce.com/tools/vscode/en/vscode-desktop/java-setup)
     - [Java JDK Download](https://www.oracle.com/java/technologies/downloads/#jdk21-mac)
