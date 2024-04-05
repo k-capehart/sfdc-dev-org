@@ -12,11 +12,13 @@
 Scratch Orgs are temporary Salesforce environments that are used for development. They are spun up based on a configuration file and contain no metadata upon creation.
 - Authenticate Salesforce environment (devhub): `sf org login web -a [alias] -d -r [url]`
 - Create a Scratch Org:
-    - `make create_scratch NAME=[alias]` OR `sf org create scratch -f config/project-scratch-def.json -a [alias] -d -w 30`
+    - `make scratch NAME=[alias]` or
+    - `sf org create scratch -f config/project-scratch-def.json -a [alias] -d -w 30`
 - Open default org:
     - `sf org open`
 - Push local metadata to org:
-    - `make push` OR `sf project deploy start`
+    - `make push` or
+    - `sf project deploy start`
     - Ideally, you'll do this during setup to get all metadata from sfdc repo into the scratch org
 
 ## Validate and Deploy
@@ -41,7 +43,7 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | Command                     | Description            |
 | :-------------------------- | :----------------------|
 | `make up`                   | Attempt to open default org, if it fails then create a new scratch org.
-| `make create_scratch`       | Make scratch org.
+| `make scratch`              | Make scratch org.
 | `make push`                 | Deploy local changes.
 | `make pull`                 | Retrieve changes from org.
 | `make diff`                 | Display diff between local and org.

@@ -1,4 +1,4 @@
-.PHONY: start create_scratch push pull diff test apex_trigger
+.PHONY: start scratch push pull diff test apex_trigger
 TIMESTAMP := $(shell date +%s)
 DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will be created from
 
@@ -16,7 +16,7 @@ start:
 
 # create a scratch org with a given name, if not given then give a default name
 # example: $ make create_scratch NAME=new-scratch-org
-create_scratch:
+scratch:
 	@if [ ! -z $(NAME) ]; then \
 		sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; \
 	else \
