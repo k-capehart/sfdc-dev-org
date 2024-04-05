@@ -3,7 +3,7 @@
 Salesforce repository template
 =======
 # Prerequisites
-- Dowload SF CLI: `npm install @salesforce/cli --global`
+- Download SF CLI: `npm install @salesforce/cli --global`
     - [More information on installation](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm#sfdx_setup_install_cli_macos)
     - [Moving from SFDX CLI to SF CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_move_to_sf_v2.htm)
 - [VS Code Salesforce Extension Pack](https://developer.salesforce.com/tools/vscode)
@@ -26,7 +26,8 @@ Scratch Orgs are temporary Salesforce environments that are used for development
     - authorization is completed by piping the sfdx url into the command `sf org login -sfdx-url --sfdx-url-stdin`
 
 # Trigger Framework
-- Implements trigger framework from https://github.com/kevinohara80/sfdc-trigger-framework
+- Implements trigger framework from [k-capehart/sfdc-trigger-framework](https://github.com/k-capehart/sfdc-trigger-framework)
+    - forked from [kevinohara80/sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework)
 - Modified to include additional virtual methods
     - `isDisabled()`: If true, skips trigger methods. Implemented through Custom Settings for easy toggling org wide.
     - `applyDefaults()`: Executes before beforeInsert().
