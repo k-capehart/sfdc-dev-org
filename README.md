@@ -40,7 +40,7 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 ## Makefile
 | Command                     | Description            |
 | :-------------------------- | :----------------------|
-| `make up`                   | Attempt to open default org, if it fails then create a new scratch org.
+| `make start`                | Attempt to open default org, if it fails then create a new scratch org.
 | `make create_scratch`       | Make scratch org.
 | `make push`                 | Deploy local changes.
 | `make pull`                 | Retrieve changes from org.
