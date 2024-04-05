@@ -1,10 +1,28 @@
-.PHONY: create open push pull diff test apex_trigger
+.PHONY: up create_scratch push pull diff test apex_trigger
+TIMESTAMP := $(shell date +%s)
+DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will be created from
 
-create: 
-	@sf org create scratch -f config/project-scratch-def.json -a $(ORG) -d -w 30
+# attempt to open the current default org
+# if it fails then try to create a new scratch org
+# if that fails, then create org shape and try again
+up:
+	@if ! sf org open ; then \
+		if ! sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; then \
+			sf org create shape -o $(DEVHUB); \
+			sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; \
+			sf org open; \
+		fi \
+	fi
 
-open: 
-	@sf org open
+# create a scratch org with a given name, if not given then give a default name
+# example: $ make create_scratch NAME=new-scratch-org
+create_scratch:
+	@if [ ! -z $(NAME) ]; then \
+		sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; \
+	else \
+		sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; \
+	fi; \
+	sf org open;
 
 push: 
 	@sf project deploy start --ignore-conflicts
@@ -19,6 +37,8 @@ diff:
 test:
 	@sf apex run test --test-level RunLocalTests -y -w 30
 
+# given a list of comma separated salesforce objects, create an apex trigger, a handler class, a helper class, and a custom settings
+# example: $ make apex_trigger TARGET="Account,Contact,Opportunity"
 apex_trigger:
 	@if [ ! -z $(TARGET) ]; then \
 		for sobj in $$(echo $(TARGET) | tr ',' '\n'); \

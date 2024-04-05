@@ -1,4 +1,4 @@
-name: Deploy project for Release
+name: Deploy project
 
 on:
   release:
@@ -9,18 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
-    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
             
-      - name: 'Authenticate using SF_ACCESS_TOKEN'
+      - name: 'Authenticate using SFDX_AUTH_URL'
         shell: bash
         run: |
           echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
 
-      - name: 'Validate'
+      - name: 'Deploy'
         run: |
           sf project deploy start -d force-app/ -c -l RunLocalTests -w 30 -o dev
