@@ -40,10 +40,12 @@ Scratch Orgs are temporary Salesforce environments that are used for development
     - `validate()`: Executes before afterInsert() and afterUpdate().
 
 ## Makefile
+- Set DEVHUB property inside Make file to alias of authenticated dev hub
+
 | Command                     | Description            |
 | :-------------------------- | :----------------------|
 | `make start`                | Attempt to open default org, if it fails then create a new scratch org.
-| `make create_scratch`       | Make scratch org.
+| `make scratch`              | Make scratch org.
 | `make push`                 | Deploy local changes.
 | `make pull`                 | Retrieve changes from org.
 | `make diff`                 | Display diff between local and org.
