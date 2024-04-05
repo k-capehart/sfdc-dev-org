@@ -19,6 +19,7 @@ Scratch Orgs are temporary Salesforce environments that are used for development
     - Ideally, you'll do this during setup to get all metadata from sfdc repo into the scratch org
 
 # Validate and Deploy
+- Implements workflows from [k-capehart/sfdc-github-actions](https://github.com/k-capehart/sfdc-github-actions)
 - .github/workflows/main.yml validates the package when a PR is opened
 - .github/workflows/release.yml deploys the package when a Release is published
 - Salesforce authorization URL is stored in Github Repository Secret
@@ -34,18 +35,18 @@ Scratch Orgs are temporary Salesforce environments that are used for development
     - `validate()`: Executes before afterInsert() and afterUpdate().
 
 # Makefile
-| Command | Description|
+| Command                     | Description            |
 | :-------------------------- | :----------------------|
-| `make create ORG=[alias]` | Make scratch org.
-| `make open` | Open default org.
-| `make push` | Deploy local changes.
-| `make pull` | Retrieve changes from org.
-| `make diff` | Display diff between local and org.
-| `make test` | Run apex tests and wait for result.
+| `make up`                   | Attempt to open default org, if it fails then create a new scratch org.
+| `make create_scratch`       | Make scratch org.
+| `make push`                 | Deploy local changes.
+| `make pull`                 | Retrieve changes from org.
+| `make diff`                 | Display diff between local and org.
+| `make test`                 | Run apex tests and wait for result.
 | `make apex_trigger TARGET=[Comma separated list of SObjects]` | Create Apex trigger, handler class, helper class, test class, and custom setting 
 
 # sf cli commands
-| Command                       | Description                    |
+| Command                       | Description                |
 | :---------------------------- | :------------------------- |
 | `sf org open`	                | Open your default org in a browser.
 | `sf project deploy preview`   | Preview a deployment to see what will deploy to the org, the potential conflicts, and the ignored files.      
@@ -56,8 +57,10 @@ Scratch Orgs are temporary Salesforce environments that are used for development
 | `sf search`	                | Search for a command.
 | `sf scanner run`	            | Scan a codebase with a selection of rules
 | `sf org create shape`	        | Create a scratch org configuration (shape) based on the specified source org.
+| `sf org list shape`           | List all org shapes you’ve created.
 | `sf org login web`	        | Log in to a Salesforce org using the web server flow.
+| `sf org login sfdx-url`       | Authorize and org using a SFdX Authorization URl in a file or through stdin.
 | `sf org create scratch`       | Create a scratch org.
+| `sf org delete scratch`       | Delete a scratch org.
 | `sf org display`              | Display information about an org. Use --verbose to display the sfdxAuthUrl property.
-| `sf auth sfdxurl store`       | Authorize an org using a Salesforce DX authorization URL stored in a file.
 | `sf apex run test`            | Invoke Apex tests in an org.

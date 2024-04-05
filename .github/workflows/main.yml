@@ -1,20 +1,21 @@
-name: Validate PR on develop branch
+name: Validate pull request
 
 on:
   pull_request:
+    branches:
+      - main
     types: [opened, synchronize]
     paths:
       - 'force-app/**'
 
 jobs:
-  validate-deployment-on-develop-org:
+  validate-deployment:
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
-    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:      
       - name: 'Checkout source code'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
