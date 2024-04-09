@@ -20,7 +20,6 @@ jobs:
           fetch-depth: 0
       
       - name: 'Authenticate using SFDX_AUTH_URL'
-        shell: bash
         run: | 
           echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
 
