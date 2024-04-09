@@ -2,11 +2,17 @@
 TIMESTAMP := $(shell date +%s)
 DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will be created from
 
-# attempt to open the current default org
+# attempt to open a scratch org with the given alias, or the current default one if none is given
 # if it fails then try to create a new scratch org
 start:
-	@if ! sf org open ; then \
-		make scratch; \
+	@if [ ! -z $(NAME) ]; then \
+		if ! sf org open -o $(NAME) ; then \
+			make scratch; \
+		fi \
+	else \
+		if ! sf org open; then \
+			make scratch; \
+		fi \
 	fi
 
 # create a scratch org with a given name or default name if none is given
@@ -15,13 +21,15 @@ start:
 scratch:
 	@if [ ! -z $(NAME) ]; then \
 		if ! sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; then \
-			sf org create shape -o $(DEVHUB); \
-			sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; \
+			if sf org create shape -o $(DEVHUB); then \
+				sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; \
+			fi \
 		fi \
 	else \
 		if ! sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; then \
-			sf org create shape -o $(DEVHUB); \
-			sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; \
+			if sf org create shape -o $(DEVHUB); then \
+				sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; \
+			fi \
 		fi \
 	fi; \
 	sf org open;
