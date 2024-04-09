@@ -5,8 +5,8 @@ DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will
 # attempt to open the current default org
 # if it fails then try to create a new scratch org
 start:
-	if ! sf org open ; then \
-		make scratch;
+	@if ! sf org open ; then \
+		make scratch; \
 	fi
 
 # create a scratch org with a given name or default name if none is given
