@@ -1,4 +1,4 @@
-.PHONY: start scratch push pull diff test apex_trigger
+.PHONY: start scratch push pull diff test scan apex_trigger
 TIMESTAMP := $(shell date +%s)
 DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will be created from
 
@@ -7,10 +7,12 @@ DEVHUB := devHub # update to be the alias of your dev hub that scratch orgs will
 start:
 	@if [ ! -z $(NAME) ]; then \
 		if ! sf org open -o $(NAME) ; then \
+			echo 'creating scratch org'; \
 			make scratch; \
 		fi \
 	else \
 		if ! sf org open; then \
+			echo 'creating scratch org'; \
 			make scratch; \
 		fi \
 	fi
@@ -21,12 +23,14 @@ start:
 scratch:
 	@if [ ! -z $(NAME) ]; then \
 		if ! sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; then \
+			echo 'creating org shape'; \
 			if sf org create shape -o $(DEVHUB); then \
 				sf org create scratch -f config/project-scratch-def.json -a $(NAME) -d -w 30; \
 			fi \
 		fi \
 	else \
 		if ! sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; then \
+			echo 'creating org shape'; \
 			if sf org create shape -o $(DEVHUB); then \
 				sf org create scratch -f config/project-scratch-def.json -a "org-$(TIMESTAMP)" -d -w 30; \
 			fi \
@@ -45,7 +49,14 @@ diff:
 	@sf project retrieve preview --concise
 
 test:
-	@sf apex run test --test-level RunLocalTests -y -w 30
+	@sf apex run test --test-level RunLocalTests --code-coverage -r human -d test-results/ -w 30
+
+scan:
+	@if ! sf scanner run -e pmd -t . -f html -o scan-results/code-scan.html --severity-threshold 2; then \
+		echo 'creating directory: scan-results/'; \
+		mkdir scan-results/; \
+		sf scanner run -e pmd -t . -f html -o scan-results/code-scan.html --severity-threshold 2; \
+	fi
 
 # given a list of comma separated salesforce objects, create an apex trigger, a handler class, a helper class, and a custom settings
 # example: $ make apex_trigger TARGET="Account,Contact,Opportunity"
