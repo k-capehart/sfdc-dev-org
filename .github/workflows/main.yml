@@ -29,7 +29,7 @@ jobs:
       
       - name: 'Scan code'
         run: |
-          sf scanner run -e pmd -t . --severity-threshold 2
+          sf scanner run -e pmd -t . --normalize-severity --severity-threshold 2
       
       - name: 'Validate'
         run: |
