@@ -33,4 +33,4 @@ jobs:
       
       - name: 'Run Tests'
         run: |
-          sf apex run test --test-level RunLocalTests --code-coverage -r human -d test-results/ -w 30
+          sf apex run test --test-level RunLocalTests -w 30
