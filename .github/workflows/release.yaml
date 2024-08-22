@@ -24,20 +24,15 @@ jobs:
         name: 'Validate'
         run: |
           echo "jobid=$(sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json | jq -r '.result.id')" >> $GITHUBOUTPUT
-  
-  approve-release:
-    name: "Require approval for deployment"
-    runs-on: ubuntu-latest
-    environment:
-      name: dev
 
   deploy-release:
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
+    environment:
+      name: dev
     needs:
       - validate-release
-      - approve-release
     steps:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
