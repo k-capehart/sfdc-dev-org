@@ -49,7 +49,7 @@ diff:
 	@sf project retrieve preview --concise
 
 test:
-	@sf apex run test --test-level RunLocalTests --code-coverage -r human -d test-results/ -w 30
+	@sf apex run test --test-level RunLocalTests --code-coverage -r human -d test-results/ -w 30 --concise
 
 scan:
 	@if ! sf scanner run -e pmd -t . -f html -o scan-results/code-scan.html --severity-threshold 2; then \

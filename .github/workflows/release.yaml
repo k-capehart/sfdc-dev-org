@@ -23,10 +23,7 @@ jobs:
       - id: validate-step
         name: 'Validate'
         run: |
-          if ! sf project deploy validate -d force-app/ -l RunLocalTests -w 30 -o dev --json > results.json; then
-            cat results.json
-          fi
-          echo "jobid=$(cat results.json | jq -r '.result.id')" >> $GITHUBOUTPUT
+          echo "jobid=$(sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json | jq -r '.result.id')" >> $GITHUBOUTPUT
   
   approve-release:
     name: "Require approval for deployment"
