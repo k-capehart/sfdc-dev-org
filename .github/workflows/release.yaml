@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
-    environment:
-      name: dev
     needs:
       - validate-release
+    environment:
+      name: dev
     steps:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
