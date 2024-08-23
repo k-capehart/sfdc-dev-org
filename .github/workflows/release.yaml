@@ -23,7 +23,7 @@ jobs:
       - id: validate-step
         name: 'Validate'
         run: |
-          echo "jobid=$(sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json | jq -r '.result.id')" >> $GITHUBOUTPUT
+          echo "jobid=$(sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json | jq -r '.result.id')" >> "$GITHUB_OUTPUT"
 
   deploy-release:
     runs-on: ubuntu-latest
