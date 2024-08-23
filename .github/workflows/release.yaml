@@ -5,10 +5,34 @@ on:
     types: [published]
 
 jobs:
+  validate-release:
+    runs-on: ubuntu-latest
+    container:
+      image: salesforce/cli:latest-slim
+    outputs:
+      jobid: ${{ steps.validate-step.outputs.jobid }} 
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: 'Authenticate using SFDX_AUTH_URL'
+        run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
+
+      - id: validate-step
+        name: 'Validate'
+        run: |
+          echo "jobid=$(sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json | jq -r '.result.id')" >> $GITHUBOUTPUT
+
   deploy-release:
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
+    needs:
+      - validate-release
+    environment:
+      name: dev
     steps:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
@@ -16,9 +40,7 @@ jobs:
           fetch-depth: 0
             
       - name: 'Authenticate using SFDX_AUTH_URL'
-        run: |
-          echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
+        run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
 
       - name: 'Deploy'
-        run: |
-          sf project deploy start -d force-app/ -c -l RunLocalTests -w 30 -o dev
+        run: sf project deploy quick -i ${{ needs.validate-release.outputs.jobid }}
