@@ -33,4 +33,4 @@ jobs:
       
       - name: 'Run Tests'
         run: |
-          sf apex run test --test-level RunLocalTests -w 30
+          sf apex run test --test-level RunLocalTests -w 30 --concise
