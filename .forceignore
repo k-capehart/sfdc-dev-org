@@ -17,3 +17,6 @@ package.xml
 **/reports/**
 **/dashboards/**
 **/reportTypes/**
+**/tsconfig.json
+
+**/*.ts

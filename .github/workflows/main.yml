@@ -31,6 +31,6 @@ jobs:
         run: |
           sf scanner run -e pmd -t . --normalize-severity --severity-threshold 2
       
-      - name: 'Run Tests'
+      - name: 'Validate Build and Run Tests'
         run: |
-          sf apex run test --test-level RunLocalTests -w 30
+          sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json
