@@ -9,7 +9,7 @@ on:
 
 jobs:
   back-propagate:
-    environment: ${{ inputs.env_name }}
+    environment: dev
     runs-on: ubuntu-latest
 
     steps:
