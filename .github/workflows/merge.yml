@@ -1,0 +1,22 @@
+name: PR Merged to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  call-back-propagation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Create PR for dev"
+        if: github.event.pull_request.merged == true
+        uses: ./.github/workflows/back-propagation.yml
+        with:
+          env_name: dev
+
+      - name: "Create PR for stage"
+        if: github.event.pull_request.merged == true
+        uses: ./.github/workflows/back-propagation.yml
+        with:
+          env_name: stage 
