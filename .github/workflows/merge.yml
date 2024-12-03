@@ -9,6 +9,11 @@ jobs:
   call-back-propagation:
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: "Create PR for dev"
         if: github.event.pull_request.merged == true
         uses: ./.github/workflows/back-propagation.yml
