@@ -6,22 +6,14 @@ on:
     branches: [main]
 
 jobs:
-  call-back-propagation:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout source code"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  create-pr-dev:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/back-propagation.yml
+    with:
+      env_name: dev
 
-      - name: "Create PR for dev"
-        if: github.event.pull_request.merged == true
-        uses: ./.github/workflows/back-propagation.yml
-        with:
-          env_name: dev
-
-      - name: "Create PR for stage"
-        if: github.event.pull_request.merged == true
-        uses: ./.github/workflows/back-propagation.yml
-        with:
-          env_name: stage 
+  create-pr-stage:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/back-propagation.yml
+    with:
+      env_name: stage
