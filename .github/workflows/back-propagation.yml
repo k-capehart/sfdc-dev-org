@@ -8,10 +8,6 @@ on:
 jobs:
   back-propagate:
     runs-on: ubuntu-latest
-    container:
-      image: salesforce/cli:latest-slim
-    permissions:
-      pull-requests: write
     steps:
       - name: "Checkout source code"
         uses: actions/checkout@v4
