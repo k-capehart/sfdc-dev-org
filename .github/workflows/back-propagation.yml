@@ -20,5 +20,5 @@ jobs:
         if: github.event.pull_request.merged == true
         run: gh pr create -B main -H test-destination --title '${{ github.event.pull_request.title }}' --body 'Created by GitHub Action'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       
