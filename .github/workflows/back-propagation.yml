@@ -20,3 +20,4 @@ jobs:
         env:
           name: dev
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH_NAME: dev
