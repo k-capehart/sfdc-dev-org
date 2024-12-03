@@ -9,7 +9,6 @@ on:
 
 jobs:
   back-propagate:
-    environment: dev
     runs-on: ubuntu-latest
 
     steps:
