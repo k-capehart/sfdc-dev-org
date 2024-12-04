@@ -1,24 +1,23 @@
 name: Back Propagate
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  workflow_call:
+    inputs:
+      env_name:
+        required: true
+        type: string
 
 jobs:
   back-propagate:
-    environment: dev
     runs-on: ubuntu-latest
+
     steps:
-      # - name: "Checkout source code"
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: "Create PR"
-        if: github.event.pull_request.merged == true
-        run: gh pr create -B $BRANCH_NAME -H main --title '${{ github.event.pull_request.title }}' --body 'Created by GitHub Action'
+        run: gh pr create -B ${{ inputs.env_name }} -H main --title '${{ github.event.pull_request.title }}' --body 'Created by GitHub Action'
         env:
-          name: dev
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          BRANCH_NAME: dev
