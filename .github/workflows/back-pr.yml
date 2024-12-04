@@ -21,7 +21,7 @@ jobs:
         run: |
           NEW_BRANCH_NAME=$(echo "${{ github.event.pull_request.title }}" | sed 's/ /_/g')
           git checkout -b NEW_BRANCH_NAME
-          git merge branch_name
+          git merge branch_name --no-edit --commit
           gh pr create -B ${{ inputs.branch_name }} -H NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
