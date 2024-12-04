@@ -1,0 +1,18 @@
+name: Pushed to Main
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  create-pr-dev:
+    uses: ./.github/workflows/back-pr.yml
+    with:
+      branch_name: dev
+    secrets: inherit
+
+  create-pr-stage:
+    uses: ./.github/workflows/back-pr.yml
+    with:
+      branch_name: stage
+    secrets: inherit
