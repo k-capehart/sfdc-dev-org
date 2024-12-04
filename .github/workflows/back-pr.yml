@@ -26,7 +26,8 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           
-          git checkout ${{ inputs.branch_name }} && git pull
+          git checkout ${{ inputs.branch_name }}
+          git pull origin ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME
           git checkout main -- .
           git add .
