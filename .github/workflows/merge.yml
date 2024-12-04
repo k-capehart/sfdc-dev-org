@@ -1,0 +1,21 @@
+name: PR Merged to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  create-pr-dev:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/back-propagation.yml
+    with:
+      env_name: dev
+    secrets: inherit
+
+  create-pr-stage:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/back-propagation.yml
+    with:
+      env_name: stage
+    secrets: inherit
