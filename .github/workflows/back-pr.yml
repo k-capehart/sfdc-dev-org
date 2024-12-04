@@ -18,6 +18,6 @@ jobs:
           fetch-depth: 0
 
       - name: "Create PR"
-        run: gh pr create -B ${{ inputs.branch_name }} -H main --title '[BACK PR] ${{ github.event.pull_request.title }}' --body 'Created by GitHub Action\n\n ${{ github.event.pull_request.body }}'
+        run: gh pr create -B ${{ inputs.branch_name }} -H main --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
