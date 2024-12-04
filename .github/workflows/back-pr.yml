@@ -1,9 +1,9 @@
-name: Back Propagate
+name: Back Propagate - PR
 
 on:
   workflow_call:
     inputs:
-      env_name:
+      branch_name:
         required: true
         type: string
 
@@ -18,6 +18,6 @@ jobs:
           fetch-depth: 0
 
       - name: "Create PR"
-        run: gh pr create -B ${{ inputs.env_name }} -H main --title '${{ github.event.pull_request.title }}' --body 'Created by GitHub Action'
+        run: gh pr create -B ${{ inputs.branch_name }} -H main --title '[BACK PR] ${{ github.event.pull_request.title }}' --body 'Created by GitHub Action\n\n ${{ github.event.pull_request.body }}'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
