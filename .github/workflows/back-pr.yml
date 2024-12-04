@@ -10,6 +10,9 @@ on:
 jobs:
   back-propagate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: "Checkout source code"
@@ -18,6 +21,10 @@ jobs:
           fetch-depth: 0
 
       - name: "Create PR"
-        run: gh pr create -B ${{ inputs.branch_name }} -H main --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
+        run: |
+          git checkout main && git pull
+          NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.title }}__${{ inputs.branch_name }}" | sed 's/ /_/g')
+          git checkout -b $NEW_BRANCH_NAME && git push -u origin $NEW_BRANCH_NAME
+          gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
