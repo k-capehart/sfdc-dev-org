@@ -51,3 +51,5 @@ scan-results/
 force-app/main/default/appMenus/
 .husky/
 .vscode/
+
+config/user/

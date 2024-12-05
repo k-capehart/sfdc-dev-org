@@ -12,4 +12,4 @@ jobs:
     if: github.event.pull_request.base.ref == 'dev' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[BACK PR]')
     uses: ./.github/workflows/deploy.yml
     secrets:
-      SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL_SCRATCH_EX }}
+      SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
