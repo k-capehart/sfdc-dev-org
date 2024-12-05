@@ -16,6 +16,7 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       
       - name: "Install sfdx-git-delta"
@@ -26,6 +27,5 @@ jobs:
 
       - name: "Deploy"
         run: |
-          git checkout main && git pull
-          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "."
+          sf sgd source delta --to "HEAD" --from "HEAD^" --output "."
           sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -l RunLocalTests -w 30 --ignore-conflicts
