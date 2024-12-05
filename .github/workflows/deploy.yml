@@ -26,5 +26,6 @@ jobs:
 
       - name: "Deploy"
         run: |
+          git checkout main && git pull
           sf sgd source delta --to "HEAD" --from "HEAD~1" --output "."
           sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -l RunLocalTests -w 30 --ignore-conflicts
