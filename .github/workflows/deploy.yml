@@ -17,9 +17,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: "Install sfdx-git-delta"
+        run: echo y | sf plugins install sfdx-git-delta
 
-      - name: 'Authenticate using SFDX_AUTH_URL'
+      - name: "Authenticate using SFDX_AUTH_URL"
         run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -u
 
       - name: "Deploy"
-        run: sf project deploy start -l RunLocalTests -w 30 --ignore-conflicts
+        run: |
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output "."
+          sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -l RunLocalTests -w 30 --ignore-conflicts
