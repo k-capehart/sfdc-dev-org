@@ -12,10 +12,3 @@ jobs:
     with:
       branch_name: dev
     secrets: inherit
-
-  create-pr-stage:
-    if: github.event.pull_request.merged == true
-    uses: ./.github/workflows/back-pr.yml
-    with:
-      branch_name: stage
-    secrets: inherit
