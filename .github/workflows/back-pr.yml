@@ -18,7 +18,6 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.branch_name }}
           fetch-depth: 0
 
       - name: "Create PR"
@@ -27,6 +26,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "github-actions@github.com"
           
+          git fetch origin ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME
           git checkout main -- .
           git add .
@@ -38,12 +38,6 @@ jobs:
 
     #### Alternative method which branches off of main and so retains commit history
     #### However, there is a higher chance of merge conflicts
-
-    # steps:
-    #   - name: "Checkout source code"
-    #     uses: actions/checkout@v4
-    #     with:
-    #       fetch-depth: 0
 
       # - name: "Create PR"
       #   run: |
