@@ -31,7 +31,7 @@ jobs:
           git fetch --all
           git checkout ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME
-          git reset --hard origin/main
+          git merge main --no-edit
           git push -f -u origin $NEW_BRANCH_NAME
           gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
         env:
