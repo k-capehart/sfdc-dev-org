@@ -1,5 +1,5 @@
 public with sharing class ExampleApexClass {
     public ExampleApexClass() {
-      // tests
+      // tests and more tests
     }
 }
