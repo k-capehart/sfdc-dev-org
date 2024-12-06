@@ -24,7 +24,7 @@ jobs:
         run: |
           NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.title }}__${{ inputs.branch_name }}" | sed 's/ /_/g')
           git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config user.email "github-actions@github.com"
           
           git fetch --all
           git checkout ${{ inputs.branch_name }}
