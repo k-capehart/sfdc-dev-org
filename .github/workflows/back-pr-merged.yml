@@ -8,31 +8,8 @@ on:
     - 'force-app/**'
 
 jobs:
-  # deploy-scratch-dev:
-  #   if: github.event.pull_request.base.ref == 'dev' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[BACK PR]')
-  #   uses: ./.github/workflows/deploy.yml
-  #   secrets:
-  #     SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
-  back-propagate:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout source code"
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-          fetch-depth: 0
-      
-      - name: "Install sf cli"
-        run: npm install @salesforce/cli --global
-
-      - name: "Install sfdx-git-delta"
-        run: echo y | sf plugins install sfdx-git-delta
-
-      - name: "Authenticate using SFDX_AUTH_URL"
-        run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -u
-
-      - name: "Deploy"
-        run: |
-          sf sgd source delta --to "HEAD" --from "HEAD^" --output "."
-          sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -l RunLocalTests -w 30 --ignore-conflicts
+  deploy-scratch-dev:
+    if: github.event.pull_request.base.ref == 'dev' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[BACK PR]')
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}

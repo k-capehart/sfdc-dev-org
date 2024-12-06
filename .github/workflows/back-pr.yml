@@ -25,15 +25,28 @@ jobs:
           NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.title }}__${{ inputs.branch_name }}" | sed 's/ /_/g')
           git config user.name "GitHub Actions Bot"
           git config user.email "github-actions@github.com"
-          
-          git fetch --all
-          git checkout ${{ inputs.branch_name }}
-          git pull origin ${{ inputs.branch_name }}
+
+          git checkout main
           git checkout -b $NEW_BRANCH_NAME
-          git checkout main -- .
-          git add .
-          git commit -m "Apply changes from main to ${{ inputs.branch_name }}"
           git push -f -u origin $NEW_BRANCH_NAME
           gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      # - name: "Create PR"
+      #   run: |
+      #     NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.title }}__${{ inputs.branch_name }}" | sed 's/ /_/g')
+      #     git config user.name "GitHub Actions Bot"
+      #     git config user.email "github-actions@github.com"
+          
+      #     git fetch --all
+      #     git checkout ${{ inputs.branch_name }}
+      #     git pull origin ${{ inputs.branch_name }}
+      #     git checkout -b $NEW_BRANCH_NAME
+      #     git checkout main -- .
+      #     git add .
+      #     git commit -m "Apply changes from main to ${{ inputs.branch_name }}"
+      #     git push -f -u origin $NEW_BRANCH_NAME
+      #     gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
