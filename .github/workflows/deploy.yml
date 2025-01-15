@@ -3,7 +3,7 @@ name: Back Propagate - Deploy
 on:
   workflow_call:
     secrets:
-      SFDX_AUTH_URL:
+      sfdx_token:
         required: true
 
 jobs:
@@ -24,9 +24,9 @@ jobs:
         run: echo y | sf plugins install sfdx-git-delta
 
       - name: "Authenticate using SFDX_AUTH_URL"
-        run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -u
+        run: echo ${{ secrets.sfdx_token }} | sf org login sfdx-url -s -u
 
       - name: "Deploy"
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" --output "."
-          sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -l RunLocalTests -w 30 --ignore-conflicts
+          sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -w 30 --ignore-conflicts
