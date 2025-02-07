@@ -35,7 +35,7 @@ jobs:
           git push -f -u origin $NEW_BRANCH_NAME
           TITLE=$(echo "${{ github.event.pull_request.title }}" | jq -Rr @sh)
           BODY=$(echo "${{ github.event.pull_request.body }}" | jq -Rr @sh)
-          PR_OUTPUT=$((gh pr create -B ${{ inputs.branch_name }} -H "$NEW_BRANCH_NAME" --title "$TITLE" --body "$BODY") 2>&1)
+          PR_OUTPUT=$((gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title $TITLE --body $BODY) 2>&1)
           if echo "$PR_OUTPUT" | grep -q "a pull request for branch \"$NEW_BRANCH_NAME\" into branch \"${{ inputs.branch_name }}\" already exists"; then
             echo "$PR_OUTPUT"
           else
