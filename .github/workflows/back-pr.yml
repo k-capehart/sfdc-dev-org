@@ -35,8 +35,8 @@ jobs:
           git push -f -u origin $NEW_BRANCH_NAME
           TITLE="${{ github.event.pull_request.title }}"
           BODY="${{ github.event.pull_request.body }}"
-          TITLE_ESCAPED=$(echo $TITLE | sed "s/'/\\\'/g; s/\"/\\\"/g")
-          BODY_ESCAPED=$(echo $BODY | sed "s/'/\\\'/g; s/\"/\\\"/g")
+          TITLE_ESCAPED=$(echo $TITLE | sed "s/\"/\\\"/g")
+          BODY_ESCAPED=$(echo $BODY | sed "s/\"/\\\"/g")
           gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title "$TITLE_ESCAPED" --body "$BODY_ESCAPED"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
