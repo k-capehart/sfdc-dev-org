@@ -33,6 +33,8 @@ jobs:
           git checkout -b $NEW_BRANCH_NAME
           git merge main --no-edit
           git push -f -u origin $NEW_BRANCH_NAME
-          gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title '[BACK PR] ${{ github.event.pull_request.title }}' --body '${{ github.event.pull_request.body }}'
+          TITLE=$(("[BACK PR] ${{ github.event.pull_request.title }}") | sed 's/'/\\\'/g; s/\"/\\\"/g')
+          BODY=$(${{ github.event.pull_request.body }} | sed 's/'/\\\'/g; s/\"/\\\"/g')
+          gh pr create -B ${{ inputs.branch_name }} -H $NEW_BRANCH_NAME --title $TITLE --body $BODY
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
