@@ -33,10 +33,9 @@ jobs:
           git checkout -b $NEW_BRANCH_NAME || git checkout $NEW_BRANCH_NAME
           git merge main --no-edit
           git push -f -u origin $NEW_BRANCH_NAME
-          TITLE=$(echo "${{ github.event.pull_request.title }}" | jq -Rr @sh)
-          BODY=$(echo "${{ github.event.pull_request.body }}" | jq -Rr @sh)
-          PR_COMMAND="gh pr create -B ${{ inputs.branch_name }} -H \"$NEW_BRANCH_NAME\" --title \"$TITLE\" --body \"$BODY\""
-          PR_OUTPUT=$(eval "$PR_COMMAND" 2>&1)
+          TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/[\"\']//g')
+          BODY=$(echo "${{ github.event.pull_request.body }}" | sed 's/[\"\']//g')
+          PR_OUTPUT=$((gh pr create -B ${{ inputs.branch_name }} -H "$NEW_BRANCH_NAME" --title "$TITLE" --body "$BODY") 2>&1)
           if echo "$PR_OUTPUT" | grep -q "a pull request for branch \"$NEW_BRANCH_NAME\" into branch \"${{ inputs.branch_name }}\" already exists"; then
             echo "$PR_OUTPUT"
           else
