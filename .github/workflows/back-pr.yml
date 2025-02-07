@@ -39,9 +39,7 @@ jobs:
           echo "$PR_OUTPUT"
           if echo "$PR_OUTPUT" | grep -q "a pull request for branch \"$NEW_BRANCH_NAME\" into branch \"${{ inputs.branch_name }}\" already exists"; then
             echo "PR already exists"
-          else
-            echo "Failed to create pull request"
-            exit 1
           fi
+          gh pr create -B ${{ inputs.branch_name }} -H "$NEW_BRANCH_NAME" --title "$TITLE" --body "$BODY"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
