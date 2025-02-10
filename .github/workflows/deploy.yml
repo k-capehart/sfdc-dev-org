@@ -27,6 +27,12 @@ jobs:
         run: echo ${{ secrets.sfdx_token }} | sf org login sfdx-url -s -u
 
       - name: "Deploy"
+        id: deploy
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" --output "."
           sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -w 30 --ignore-conflicts
+        continue-on-error: true
+
+      - name: "Deploy without destructive changes"
+        if: steps.deploy.outcome == 'failure'
+        run: sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
