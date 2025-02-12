@@ -22,6 +22,8 @@ jobs:
 
   close-stale-prs:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     needs: [deploy-scratch-dev, deploy-scratch-staging]
     if: ${{ ! failure() }}
     steps:
@@ -29,7 +31,7 @@ jobs:
         run: |
           CREATED=${{ github.event.pull_request.created_at }}
           BRANCH=${{ github.event.pull_request.base.ref }}
-          for pr_number in $(gh search prs --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort created --json number --json createdAt | jq --arg CREATED "$CREATED" -r '.[] | select(.createdAt < $CREATED)' | jq -r '.number'); do
+          for pr_number in $(gh search prs [BACK PR] --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort created --json number --json createdAt | jq --arg CREATED "$CREATED" -r '.[] | select(.createdAt < $CREATED)' | jq -r '.number'); do
             gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This Back PR was automatically closed because a more recent PR for this branch was merged." --delete-branch
           done
         env:
