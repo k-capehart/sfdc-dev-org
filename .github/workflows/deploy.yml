@@ -29,7 +29,7 @@ jobs:
       - name: "Deploy"
         id: deploy
         run: |
-          sf sgd source delta --to "HEAD" --from "HEAD^" --output "."
+          sf sgd source delta --to "HEAD" --from "HEAD^" -o "."
           sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -w 30 --ignore-conflicts
         continue-on-error: true
 
