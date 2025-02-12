@@ -23,7 +23,7 @@ jobs:
   close-stale-prs:
     runs-on: ubuntu-latest
     needs: [deploy-scratch-dev, deploy-scratch-staging]
-    if: success()
+    if: !failure()
     steps:
       - name: Close stale PRs
         run: |
