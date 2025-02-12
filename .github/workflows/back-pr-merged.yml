@@ -13,3 +13,14 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+
+  close-stale-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close stale PRs
+        run: |
+          CREATED=github.event.pull_request.created_at
+          BRANCH=github.event.pull_request.base.ref
+          for pr_number in $(gh search prs --label $BRANCH --repo guideline-app/gdlsf --state open --sort created --json number --json createdAt | jq -r '.[] | select(.createdAt < ($CREATED | strftime("%Y-%m-%dT%H:%M:%SZ")))' | jq -r '.number'); do
+            gh pr close $pr_number --repo guideline-app/gdlsf --comment "This Back PR was automatically closed because a more recent PR for this branch was merged." --delete-branch
+          done
