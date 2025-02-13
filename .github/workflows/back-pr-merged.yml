@@ -35,4 +35,4 @@ jobs:
             gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This Back PR was automatically closed because a more recent PR for this branch was merged." --delete-branch
           done
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
