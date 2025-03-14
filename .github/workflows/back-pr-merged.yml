@@ -32,7 +32,7 @@ jobs:
         run: |
           UPDATED=${{ github.event.pull_request.updated_at }}
           BRANCH=${{ github.event.pull_request.base.ref }}
-          for pr_number in $(gh search prs [BACK PR] --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort updated --json number --json updatedAt | jq --arg UPDATED "$UPDATED" -r '.[] | select(.updatedAt > $UPDATED)' | jq -r '.number'); do
+          for pr_number in $(gh search prs [BACK PR] --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort updated --json number --json updatedAt | jq --arg UPDATED "$UPDATED" -r '.[] | select(.updatedAt < $UPDATED)' | jq -r '.number'); do
               gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This Back PR was automatically closed because a more recent PR for this branch was merged." --delete-branch
           done
         env:
