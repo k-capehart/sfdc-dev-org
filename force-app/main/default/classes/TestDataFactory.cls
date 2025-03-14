@@ -1,4 +1,4 @@
-@isTest(SeeAllData=False)
+@isTest(SeeAllData=False) //test
 public with sharing class TestDataFactory {
     public static List<Account> createTestAccounts(Integer num, boolean doInsert) {
         List<Account> accs = new List<Account>();
