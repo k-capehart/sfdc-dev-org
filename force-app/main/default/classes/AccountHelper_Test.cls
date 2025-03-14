@@ -9,4 +9,4 @@ public with sharing class AccountHelper_Test {
         List<Account> result = [SELECT Id FROM Account LIMIT 1];
         Assert.isTrue(!result.isEmpty());
     }
-}
+} // test 3
