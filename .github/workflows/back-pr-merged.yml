@@ -28,6 +28,9 @@ jobs:
     needs: [deploy-scratch-dev, deploy-scratch-staging]
     if: ${{ ! failure() }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Update PRs pointing to the same branch and close any that have no changes
         run: |
           BRANCH=${{ github.event.pull_request.base.ref }}
