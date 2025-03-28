@@ -53,3 +53,5 @@ force-app/main/default/appMenus/
 .vscode/
 
 config/user/
+
+package-lock.json
