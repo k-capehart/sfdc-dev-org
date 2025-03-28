@@ -5,7 +5,7 @@ on:
     types: [closed]
     branches: [dev]
     paths:
-    - 'force-app/**'
+      - "force-app/**"
 
 jobs:
   deploy-scratch-dev:
@@ -30,10 +30,10 @@ jobs:
     steps:
       - name: Close stale PRs
         run: |
-          UPDATED=${{ github.event.pull_request.updated_at }}
+          CREATED=${{ github.event.pull_request.created_at }}
           BRANCH=${{ github.event.pull_request.base.ref }}
-          for pr_number in $(gh search prs [BACK PR] --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort updated --json number --json updatedAt | jq --arg UPDATED "$UPDATED" -r '.[] | select(.updatedAt < $UPDATED)' | jq -r '.number'); do
-              gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This Back PR was automatically closed because a more recent PR for this branch was merged." --delete-branch
+          for pr_number in $(gh search prs [BACK PR] --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --sort created --json number --json createdAt | jq --arg CREATED "$CREATED" -r '.[] | select(.createdAt < $CREATED)' | jq -r '.number'); do
+              gh pr update-branch $pr_number --repo k-capehart/sfdc-dev-org
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
