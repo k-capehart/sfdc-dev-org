@@ -1,0 +1,31 @@
+name: Check PR diff
+
+on:
+  pull_request:
+    types: [synchronize]
+
+jobs:
+  check-diff:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    if: contains(github.event.pull_request.title, '[BACK PR]')
+    steps:
+      - name: Check for diff between base and head and auto close if no diff
+        run: |
+          BASE_REF=${{ github.event.pull_request.base.ref }}
+          HEAD_REF=${{ github.event.pull_request.head.ref }}
+
+          git fetch origin $BASE_REF
+          git fetch origin $HEAD_REF
+
+          CHANGES=$(git diff --name-only origin/$BASE_REF origin/$HEAD_REF)
+          PR_NUMBER=${{ github.event.pull_request.number }}
+
+          if [ -z "$CHANGES" ]; then
+            echo "No changes detected between $BASE_REF and $HEAD_REF"
+            gh pr close $PR_NUMBER --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because there are no changes between the base branch ($BASE_REF) and the head branch ($HEAD_REF)." --delete-branch
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
