@@ -31,7 +31,7 @@ jobs:
       - name: Update PRs pointing to the same branch and close any that have no changes
         run: |
           BRANCH=${{ github.event.pull_request.base.ref }}
-          for pr_number base_ref head_ref in $(gh pr list --search "[BACK PR]" --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --json number --json headRefName --json baseRefName | jq -r '.[] | "\(.number) \(.baseRefName) \(.headRefName)"'); do
+          while IFS=' ' read -r pr_number base_ref head_ref; do
               gh pr update-branch $pr_number --repo k-capehart/sfdc-dev-org
 
               git fetch origin $base_ref
@@ -43,6 +43,6 @@ jobs:
                 echo "No changes detected between $base_ref and $head_ref"
                 gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because there are no changes between the base branch ($base_ref) and the head branch ($head_ref)." --delete-branch
               fi
-          done
+          done < <(gh pr list --search "[BACK PR]" --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --json number --json headRefName --json baseRefName | jq -r '.[] | "\(.number) \(.baseRefName) \(.headRefName)"')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
