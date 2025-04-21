@@ -35,7 +35,7 @@ jobs:
         run: |
           BRANCH=${{ github.event.pull_request.base.ref }}
           while IFS=' ' read -r pr_number base_ref head_ref; do
-              gh pr update-branch $pr_number --repo k-capehart/sfdc-dev-org
+              gh pr update-branch $pr_number --repo k-capehart/sfdc-dev-org --rebase
 
               git fetch origin $base_ref
               git fetch origin $head_ref
