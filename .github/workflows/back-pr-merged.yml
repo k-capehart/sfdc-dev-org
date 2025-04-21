@@ -19,33 +19,3 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
-
-  close-stale-prs:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    needs: [deploy-scratch-dev, deploy-scratch-staging]
-    if: ${{ ! failure() }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Update PRs pointing to the same branch and close any that have no changes
-        run: |
-          BRANCH=${{ github.event.pull_request.base.ref }}
-          while IFS=' ' read -r pr_number base_ref head_ref; do
-              gh pr update-branch $pr_number --repo k-capehart/sfdc-dev-org --rebase
-
-              git fetch origin $base_ref
-              git fetch origin $head_ref
-
-              CHANGES=$(git diff --name-only origin/$base_ref origin/$head_ref)
-
-              if [ -z "$CHANGES" ]; then
-                echo "No changes detected between $base_ref and $head_ref"
-                gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because there are no changes between the base branch ($base_ref) and the head branch ($head_ref)." --delete-branch
-              fi
-          done < <(gh pr list --search "[BACK PR]" --label $BRANCH --repo k-capehart/sfdc-dev-org --state open --json number --json headRefName --json baseRefName | jq -r '.[] | "\(.number) \(.baseRefName) \(.headRefName)"')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
