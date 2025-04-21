@@ -11,3 +11,4 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 }
 // this is merge conflict test // another test
 // test
+// test
