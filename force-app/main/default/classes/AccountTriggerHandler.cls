@@ -9,6 +9,3 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
   public override void validate() {
   }
 }
-// this is merge conflict test // another test
-// test
-// test
