@@ -10,7 +10,6 @@ on:
 
 jobs:
   validate-deployment:
-    if: github.event.sender.login == 'not-a-real-user'
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
