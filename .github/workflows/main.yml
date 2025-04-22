@@ -6,31 +6,32 @@ on:
       - main
     types: [opened, synchronize]
     paths:
-      - 'force-app/**'
+      - "force-app/**"
 
 jobs:
   validate-deployment:
+    if: github.event.sender.login == 'k-capehart'
     runs-on: ubuntu-latest
     container:
       image: salesforce/cli:latest-slim
-    steps:      
-      - name: 'Checkout source code'
+    steps:
+      - name: "Checkout source code"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      - name: 'Install sfdx-scanner'
+
+      - name: "Install sfdx-scanner"
         run: |
           sf plugins install @salesforce/sfdx-scanner
 
-      - name: 'Authenticate using SFDX_AUTH_URL'
-        run: | 
+      - name: "Authenticate using SFDX_AUTH_URL"
+        run: |
           echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
-      
-      - name: 'Scan code'
+
+      - name: "Scan code"
         run: |
           sf scanner run -e pmd -t . --normalize-severity --severity-threshold 2
-      
-      - name: 'Validate Build and Run Tests'
+
+      - name: "Validate Build and Run Tests"
         run: |
           sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json
