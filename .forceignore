@@ -22,3 +22,4 @@ package.xml
 **/*.ts
 
 **/**.cls
+**/**.cls-meta.xml
