@@ -35,14 +35,12 @@ jobs:
       - name: "Validate Build and Run Tests"
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
+          echo "Validating..."
           OUTPUT=$(sf project deploy validate -x package/package.xml -l RunLocalTests -w 30 2>&1)
+          STATUS=$?
+          echo "Done"
+          echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "No local changes to deploy"; then
-            echo "No changes to deploy - continuing workflow"
             exit 0
-          else
-            echo "$OUTPUT"
-            if [[ $? -ne 0 ]]; then
-              echo "Deployment validation failed with an error"
-            exit 1
-            fi
           fi
+          exit $STATUS
