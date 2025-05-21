@@ -34,14 +34,14 @@ jobs:
 
       - name: "Validate Build and Run Tests"
         run: |
-          output=$(sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore 2>&1)
-          status=$?
-          if [[ $status -eq 1 && $(echo "$output" | grep -c "Error (NothingToDeploy): No local changes to deploy") -gt 0 ]]; then
-            echo "No changes to deploy - continuing workflow"
+          OUTPUT=$(sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore 2>&1)
+          if echo "$OUTPUT" | grep -q "Success"; then
+            echo "$OUTPUT"
+          elif echo "$OUTPUT" | grep -q "Error (NothingToDeploy)"; then
+            echo "$OUTPUT"
             exit 0
-          elif [[ $status -ne 0 ]]; then
-            echo "Delta generation failed with an error"
-            echo "$output"
+          else
+            echo "$OUTPUT"
             exit 1
           fi
           sf project deploy validate -x package/package.xml -l RunLocalTests -w 30
