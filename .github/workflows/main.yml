@@ -36,12 +36,13 @@ jobs:
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
           OUTPUT=$(sf project deploy validate -x package/package.xml -l RunLocalTests -w 30 2>&1)
-          if echo "$OUTPUT" | grep -q "NothingToDeploy"; then
+          if echo "$OUTPUT" | grep -q "No local changes to deploy"; then
             echo "No changes to deploy - continuing workflow"
             exit 0
           else
             echo "$OUTPUT"
             if [[ $? -ne 0 ]]; then
-              exit 1
+              echo "Deployment validation failed with an error"
+            exit 1
             fi
           fi
