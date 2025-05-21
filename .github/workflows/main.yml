@@ -33,4 +33,4 @@ jobs:
 
       - name: "Validate Build and Run Tests"
         run: |
-          sf project deploy validate -d force-app/ -l RunLocalTests -w 30 --json
+          sf project deploy validate -d force-app/ -l RunLocalTests -w 30

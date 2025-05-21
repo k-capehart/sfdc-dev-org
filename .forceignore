@@ -21,4 +21,4 @@ package.xml
 
 **/*.ts
 
-**/classes/**
+**/**.cls
