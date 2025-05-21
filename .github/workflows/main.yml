@@ -40,7 +40,7 @@ jobs:
           STATUS=$?
           echo "Done"
           echo "$OUTPUT"
-          if echo "$OUTPUT" | grep -q "No local changes to deploy"; then
+          if echo "$OUTPUT" | grep -c "No local changes to deploy"; then
             exit 0
           fi
           exit $STATUS
