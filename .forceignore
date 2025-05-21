@@ -20,6 +20,3 @@ package.xml
 **/tsconfig.json
 
 **/*.ts
-
-**/**.cls
-**/**.cls-meta.xml
