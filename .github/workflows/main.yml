@@ -36,6 +36,7 @@ jobs:
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
           echo "Validating..."
+          sf project deploy validate -x package/package.xml -l RunLocalTests -w 30
           OUTPUT=$(sf project deploy validate -x package/package.xml -l RunLocalTests -w 30 2>&1)
           STATUS=$?
           echo "Done"
