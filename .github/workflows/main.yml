@@ -36,11 +36,14 @@ jobs:
         run: |
           OUTPUT=$(sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore 2>&1)
           if echo "$OUTPUT" | grep -q "Success"; then
+            echo "Delta generation successful"
             echo "$OUTPUT"
-          elif echo "$OUTPUT" | grep -q "Error (NothingToDeploy)"; then
+          elif echo "$OUTPUT" | grep -q "No local changes to deploy."; then
+            echo "No changes to deploy - continuing workflow"
             echo "$OUTPUT"
             exit 0
           else
+            echo "Delta generation failed with an error"
             echo "$OUTPUT"
             exit 1
           fi
