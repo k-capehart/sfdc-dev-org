@@ -55,5 +55,3 @@ force-app/main/default/appMenus/
 config/user/
 
 package-lock.json
-
-**/classes/**

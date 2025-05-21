@@ -20,3 +20,5 @@ package.xml
 **/tsconfig.json
 
 **/*.ts
+
+**/classes/**
