@@ -20,13 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Check for changes"
-        run: |
-          if [ `git status force-app/main/default --porcelain=1 | wc -l` -eq 0 ]; then
-            echo "No changes detected in force-app/main/default"
-            exit 0
-          fi
-
       - name: "Install sf cli"
         run: npm install @salesforce/cli --global
 
@@ -39,9 +32,11 @@ jobs:
         # the validate command is recommended only for production, as it enforces tests
       - name: "Run validation"
         run: |
-          sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
-          if [ ${{ inputs.branch_name }} == 'main' ]; then
-            sf project deploy validate -x package/package.xml -l RunLocalTests -w 45
-          else
-            sf project deploy start -x package/package.xml --dry-run -w 45
+          if [ `git status force-app/main/default --porcelain=1 | wc -l` -ne 0 ]; then
+            sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
+            if [ ${{ inputs.branch_name }} == 'main' ]; then
+              sf project deploy validate -x package/package.xml -l RunLocalTests -w 45
+            else
+              sf project deploy start -x package/package.xml --dry-run -w 45
+            fi
           fi
