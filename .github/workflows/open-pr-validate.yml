@@ -3,8 +3,6 @@ name: Validate pull requests when opened or synchronized
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - "force-app/**"
 
 jobs:
   check-if-branch-is-up-to-date:
