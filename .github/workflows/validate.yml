@@ -20,6 +20,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: "Check for changes"
+        run: |
+          if [ `git status force-app/main/default --porcelain=1 | wc -l` -eq 0 ]; then
+            echo "No changes detected in force-app/main/default"
+            exit 0
+          fi
+
       - name: "Install sf cli"
         run: npm install @salesforce/cli --global
 
