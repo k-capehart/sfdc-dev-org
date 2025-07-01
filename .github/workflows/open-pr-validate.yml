@@ -3,11 +3,9 @@ name: Validate pull requests when opened or synchronized
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - "force-app/**"
 
 jobs:
-  check-if-validation-needed:
+  check-if-branch-is-up-to-date:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout source code"
@@ -22,31 +20,20 @@ jobs:
             exit 1
           fi
 
-      - name: "Check for changes"
-        run: |
-          if [ `git status force-app/main/default --porcelain=1 | wc -l` -eq 0 ]; then
-            echo "No changes detected in force-app/main/default"
-            exit 0
-          fi
-
   validate-prod:
-    runs-on: ubuntu-latest
-    needs: check-if-validation-needed
-    if: ${{ github.event.pull_request.base.ref }} == 'main'
-    steps:
-      - name: "Call validation workflow"
-        uses: ./.github/workflows/validate.yml
-        with:
-          sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
-          branch_name: ${{ github.event.pull_request.base.ref }}
+    needs: check-if-branch-is-up-to-date
+    if: github.event.pull_request.base.ref == 'main'
+    uses: ./.github/workflows/validate.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      branch_name: ${{ github.event.pull_request.base.ref }}
 
   validate-sandbox:
-    runs-on: ubuntu-latest
-    needs: check-if-validation-needed
-    if: ${{ github.event.pull_request.base.ref }} != 'main'
-    steps:
-      - name: "Call validation workflow"
-        uses: ./.github/workflows/validate.yml
-        with:
-          sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
-          branch_name: ${{ github.event.pull_request.base.ref }}
+    needs: check-if-branch-is-up-to-date
+    if: github.event.pull_request.base.ref != 'main'
+    uses: ./.github/workflows/validate.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      branch_name: ${{ github.event.pull_request.base.ref }}

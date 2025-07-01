@@ -37,7 +37,7 @@ jobs:
       - name: "Create PR"
         run: |
           while IFS=' ' read -r pr_number base_ref head_ref; do
-            gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because a more recent PR has been opened." --delete-branch
+            gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because a more recent PR has been opened."
           done < <(gh pr list --search "[BACK PR]" --label ${{ inputs.branch_name }} --repo k-capehart/sfdc-dev-org --state open --json number --json headRefName --json baseRefName | jq -r '.[] | "\(.number) \(.baseRefName) \(.headRefName)"')
 
           TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
