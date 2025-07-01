@@ -3,8 +3,6 @@ name: Validate pull requests when opened or synchronized
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - "force-app/**"
 
 jobs:
   check-if-branch-is-up-to-date:
@@ -24,7 +22,7 @@ jobs:
 
   validate-prod:
     needs: check-if-branch-is-up-to-date
-    if: ${{ github.event.pull_request.base.ref }} == 'main'
+    if: github.event.pull_request.base.ref == 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
@@ -33,7 +31,7 @@ jobs:
 
   validate-sandbox:
     needs: check-if-branch-is-up-to-date
-    if: ${{ github.event.pull_request.base.ref }} != 'main'
+    if: github.event.pull_request.base.ref != 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
