@@ -34,7 +34,7 @@ jobs:
         run: echo y | sf plugins install sfdx-git-delta
 
       - name: "Authenticate using SFDX_AUTH_URL"
-        run: echo ${{ secrets.SFDX_AUTH_URL }} | sf org login sfdx-url -s -a dev -u
+        run: echo ${{ secrets.sfdx_token }} | sf org login sfdx-url -s -a dev -u
 
         # the validate command is recommended only for production, as it enforces tests
       - name: "Run validation"
