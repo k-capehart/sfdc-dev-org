@@ -16,7 +16,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
-      
+
       - name: "Install sf cli"
         run: npm install @salesforce/cli --global
 
@@ -30,9 +30,4 @@ jobs:
         id: deploy
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD^" -o "."
-          sf project deploy start -x package/package.xml --post-destructive-changes destructiveChanges/destructiveChanges.xml -w 30 --ignore-conflicts
-        continue-on-error: true
-
-      - name: "Deploy without destructive changes"
-        if: steps.deploy.outcome == 'failure'
-        run: sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
+          sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
