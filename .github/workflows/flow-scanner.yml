@@ -1,0 +1,27 @@
+name: Scan pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+    types: [opened, synchronize]
+    paths:
+      - "force-app/main/default/flows/**"
+
+jobs:
+  scan-pull-request:
+    runs-on: ubuntu-latest
+    container:
+      image: salesforce/cli:latest-slim
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Install lightning-flow-scanner"
+        run: echo y | sf plugins install lightning-flow-scanner
+
+      - name: "Run lightning-flow-scanner"
+        run: sf scanner run -e pmd -t . --normalize-severity --severity-threshold 2
