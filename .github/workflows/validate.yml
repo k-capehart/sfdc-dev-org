@@ -39,4 +39,6 @@ jobs:
             else
               sf project deploy start -x package/package.xml --dry-run -w 45
             fi
+          else
+            echo "No changes detected in force-app/main/default"
           fi
