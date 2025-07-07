@@ -53,12 +53,5 @@ jobs:
             exit 1
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  validate-back-pr:
-    uses: ./.github/workflows/validate.yml
-    needs: back-propagate
-    secrets:
-      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
-    with:
-      branch_name: ${{ github.event.pull_request.base.ref }}
+          # using custom PAT instead of default GITHUB_TOKEN so that workflows will trigger
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
