@@ -27,7 +27,8 @@ jobs:
 
       - name: "Create new branch"
         run: |
-          NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.head.ref }}__${{ inputs.branch_name }}" | sed 's/ /_/g')
+          TIMESTAMP=$(date +%s)
+          NEW_BRANCH_NAME=$(echo "gh_actions/${{ github.event.pull_request.head.ref }}__${{ inputs.branch_name }}_$TIMESTAMP" | sed 's/ /_/g')
           git fetch --all
           git checkout ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME || git checkout $NEW_BRANCH_NAME
