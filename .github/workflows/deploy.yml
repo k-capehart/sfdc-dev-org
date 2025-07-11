@@ -1,4 +1,4 @@
-name: Back Propagate - Deploy
+name: Deploy to Salesforce
 
 on:
   workflow_call:
