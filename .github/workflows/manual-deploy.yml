@@ -20,19 +20,19 @@ on:
 
 jobs:
   deploy-prod:
-    if: github.event.ref.base == 'main'
+    if: github.ref_name == 'main'
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
-      from: "origin/${{ github.event.ref.base }}"
+      from: "origin/${{ github.ref_name }}"
       to: "origin/${{ github.event.inputs.target_branch }}"
 
   deploy-sandbox:
-    if: github.event.ref.base != 'main'
+    if: github.ref_name != 'main'
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
-      from: "origin/${{ github.event.ref.base }}"
+      from: "origin/${{ github.ref_name }}"
       to: "origin/${{ github.event.inputs.target_branch }}"
