@@ -1,0 +1,28 @@
+name: Manual Deploy Commit History
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: "Deploy commits between HEAD and this commit hash:"
+        required: true
+        type: string
+
+jobs:
+  deploy-prod:
+    if: github.ref_name == 'main'
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      from: "${{ github.event.inputs.commit_hash }}"
+      to: "HEAD"
+
+  deploy-sandbox:
+    if: github.ref_name != 'main'
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      from: "${{ github.event.inputs.commit_hash }}"
+      to: "HEAD"

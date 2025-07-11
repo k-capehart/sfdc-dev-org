@@ -3,13 +3,8 @@ name: Manual Deploy Between Branches
 on:
   workflow_dispatch:
     inputs:
-      # source_branch:
-      #   description: "Source branch name"
-      #   required: true
-      #   type: string
-      #   default: "main"
       target_branch:
-        description: "Target branch name"
+        description: "Deploy to:"
         required: true
         type: choice
         options:
@@ -20,7 +15,7 @@ on:
 
 jobs:
   deploy-prod:
-    if: github.ref_name == 'main'
+    if: github.event.inputs.target_branch == 'main'
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
@@ -29,7 +24,7 @@ jobs:
       to: "origin/${{ github.event.inputs.target_branch }}"
 
   deploy-sandbox:
-    if: github.ref_name != 'main'
+    if: github.event.inputs.target_branch != 'main'
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
