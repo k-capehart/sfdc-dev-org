@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       commit_hash:
-        description: "Deploy commits between HEAD and this commit hash:"
+        description: "Deploy commits between this commit and HEAD:"
         required: true
         type: string
 
