@@ -1,0 +1,38 @@
+name: Manual Deploy Between Branches
+
+on:
+  workflow_dispatch:
+    inputs:
+      # source_branch:
+      #   description: "Source branch name"
+      #   required: true
+      #   type: string
+      #   default: "main"
+      target_branch:
+        description: "Target branch name"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - main
+        default: "dev"
+
+jobs:
+  deploy-prod:
+    if: github.ref_name == 'main'
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      from: "origin/${{ github.ref_name }}"
+      to: "origin/${{ github.event.inputs.target_branch }}"
+
+  deploy-sandbox:
+    if: github.ref_name != 'main'
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+    with:
+      from: "origin/${{ github.ref_name }}"
+      to: "origin/${{ github.event.inputs.target_branch }}"
