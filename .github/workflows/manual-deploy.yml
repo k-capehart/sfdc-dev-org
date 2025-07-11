@@ -40,5 +40,5 @@ jobs:
         id: deploy
         run: |
           echo "Deploying changes from ${{ github.event.inputs.source_branch }} to ${{ github.event.inputs.target_branch }}"
-          sf sgd source delta --to "${{ github.event.inputs.target_branch }}" --from "${{ github.event.inputs.source_branch }}" -o "."
+          sf sgd source delta --to "origin/${{ github.event.inputs.target_branch }}" --from "origin/${{ github.event.inputs.source_branch }}" -o "."
           sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
