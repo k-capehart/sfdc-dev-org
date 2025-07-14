@@ -33,6 +33,7 @@ jobs:
           git checkout ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME || git checkout $NEW_BRANCH_NAME
           git merge main --no-edit
+          git push -f -u origin $NEW_BRANCH_NAME
 
       - name: "Create PR"
         run: |
@@ -40,8 +41,6 @@ jobs:
             echo "No changes detected"
             exit 0
           fi
-
-          git push -f -u origin $NEW_BRANCH_NAME
 
           while IFS=' ' read -r pr_number base_ref head_ref; do
             gh pr close $pr_number --repo k-capehart/sfdc-dev-org --comment "This PR has been automatically closed because a more recent PR has been opened."
