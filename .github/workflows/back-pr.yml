@@ -33,6 +33,10 @@ jobs:
           git checkout ${{ inputs.branch_name }}
           git checkout -b $NEW_BRANCH_NAME || git checkout $NEW_BRANCH_NAME
           git merge main --no-edit
+          if [ `git diff --name-only HEAD origin/${{ inputs.branch_name }} . | wc -l` -eq 0 ]; then
+            echo "No changes detected"
+            exit 0
+          fi
           git push -f -u origin $NEW_BRANCH_NAME
 
       - name: "Create PR"
