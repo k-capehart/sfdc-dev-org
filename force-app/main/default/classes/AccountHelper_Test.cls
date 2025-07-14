@@ -7,5 +7,5 @@ public with sharing class AccountHelper_Test {
     Test.stopTest();
     List<Account> result = [SELECT Id FROM Account LIMIT 1];
     Assert.isTrue(!result.isEmpty());
-  } // test
+  }
 }
