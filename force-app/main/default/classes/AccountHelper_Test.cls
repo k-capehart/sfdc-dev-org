@@ -9,3 +9,4 @@ public with sharing class AccountHelper_Test {
     Assert.isTrue(!result.isEmpty());
   } // test
 }
+// test
