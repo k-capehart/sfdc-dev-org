@@ -6,6 +6,14 @@ on:
     branches: [main]
 
 jobs:
+  deploy-to-prod:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      from: ${{ github.event.pull_request.base.ref }}
+      to: ${{ github.event.pull_request.head.ref }}
+
   create-pr-dev:
     if: github.event.pull_request.merged == true
     uses: ./.github/workflows/back-pr.yml
