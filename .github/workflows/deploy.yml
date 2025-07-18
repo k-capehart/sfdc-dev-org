@@ -40,30 +40,18 @@ jobs:
           sf sgd source delta --to "${{ inputs.to }}" --from "${{ inputs.from }}" -o "."
           sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
 
-  # only send success notifications if it's for production
-  slack-notification-success:
-    runs-on: ubuntu-latest
-    needs: deploy-to-salesforce
-    if: success()
-    steps:
-      - name: "Post to Slack"
+      - name: "Slack Notify Success"
+        if: ${{ success() }}
         run: |
-          title=":check: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
-          pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
-          message="${{ github.event.pull_request.body }}"
-          payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
+          LOG_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          message=":check: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}\n<${LOG_URL}|View in GitHub>\n${{ github.event.pull_request.body }}"
+          payload=$(jq -n --arg channel "#github-notifications" --arg text "$message" '{channel: $channel, text: $text}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
-  # we want to send failure notifications for any environment
-  slack-notification-failure:
-    runs-on: ubuntu-latest
-    needs: deploy-to-salesforce
-    if: failure()
-    steps:
-      - name: "Post to Slack"
+      - name: "Slack Notify Failure"
+        if: ${{ failure() }}
         run: |
-          title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
-          pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
-          message="The deployment failed. Please check the logs for more details."
-          payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
+          LOG_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          message=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}\n<${LOG_URL}|View in GitHub>\nThe deployment failed. Please check the logs for more details."
+          payload=$(jq -n --arg channel "#github-notifications" --arg text "$message" '{channel: $channel, text: $text}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
