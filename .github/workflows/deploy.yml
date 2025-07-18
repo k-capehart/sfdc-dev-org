@@ -14,7 +14,7 @@ on:
         required: true
 
 jobs:
-  back-propagate:
+  deploy-to-salesforce:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,3 +37,31 @@ jobs:
         run: |
           sf sgd source delta --to "${{ inputs.to }}" --from "${{ inputs.from }}" -o "."
           sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
+
+  # only send success notifications if it's for production
+  slack-notification-success:
+    runs-on: ubuntu-latest
+    needs: deploy-to-salesforce
+    if: success()
+    steps:
+      - name: "Post to Slack"
+        run: |
+          title=":check: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
+          pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
+          message="${{ github.event.pull_request.body }}"
+          payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+  # we want to send failure notifications for any environment
+  slack-notification-failure:
+    runs-on: ubuntu-latest
+    needs: deploy-to-salesforce
+    if: failure()
+    steps:
+      - name: "Post to Slack"
+        run: |
+          title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
+          pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
+          message="The deployment failed. Please check the logs for more details."
+          payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
