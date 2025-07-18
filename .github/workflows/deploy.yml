@@ -66,6 +66,8 @@ jobs:
 
       - name: "Create Release"
         if: success() && github.event.pull_request.base.ref == 'main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VER=$(date +%s)
           LATEST_VER=$(gh release view --json tagName | jq -r .tagName)
