@@ -63,3 +63,10 @@ jobs:
           log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
+
+      - name: "Create Release"
+        if: success() && github.event.pull_request.base.ref == 'main'
+        run: |
+          VER=$(date +%s)
+          LATEST_VER=$(gh release view --json tagName | jq -r .tagName)
+          gh release create ${VER} --generate-notes --latest --target main --notes-start-tag ${LATEST_VER}
