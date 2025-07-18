@@ -17,6 +17,7 @@ jobs:
       to: ${{ github.event.pull_request.head.ref }}
 
   create-pr-dev:
+    needs: deploy-to-prod
     if: github.event.pull_request.merged == true
     uses: ./.github/workflows/back-pr.yml
     with:
