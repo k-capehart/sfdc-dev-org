@@ -19,6 +19,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+      slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
       from: "origin/${{ github.ref_name }}"
       to: "origin/${{ github.event.inputs.target_branch }}"
@@ -28,6 +29,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
+      slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
       from: "origin/${{ github.ref_name }}"
       to: "origin/${{ github.event.inputs.target_branch }}"
