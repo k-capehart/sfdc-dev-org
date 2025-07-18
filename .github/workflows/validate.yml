@@ -34,7 +34,7 @@ jobs:
         run: |
           if [ `git diff --name-only HEAD^ HEAD force-app/main/default | wc -l` -ne 0 ]; then
             sf sgd source delta --to "HEAD" --from "HEAD^" -o "." -i .forceignore
-            if [ ${{ inputs.branch_name }} == 'main' || ${{ inputs.branch_name }} == 'staging' ]; then
+            if [[ "${{ inputs.branch_name }}" == "main" || "${{ inputs.branch_name }}" == "staging" ]]; then
               sf project deploy validate -x package/package.xml -l RunLocalTests -w 45
             else
               sf project deploy start -x package/package.xml --dry-run -w 45
