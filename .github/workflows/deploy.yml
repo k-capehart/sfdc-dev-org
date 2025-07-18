@@ -41,7 +41,7 @@ jobs:
           sf project deploy start -x package/package.xml -w 30 --ignore-conflicts
 
       - name: "Slack Notify Success"
-        if: ${{ success() }}
+        if: success() && github.event.pull_request.base.ref == 'main'
         run: |
           channel="#github-notifications"
           title=":white_check_mark: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
@@ -51,7 +51,7 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
       - name: "Slack Notify Failure"
-        if: ${{ failure() }}
+        if: failure()
         run: |
           channel="#github-notifications"
           title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
