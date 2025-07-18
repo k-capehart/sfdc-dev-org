@@ -43,15 +43,17 @@ jobs:
       - name: "Slack Notify Success"
         if: ${{ success() }}
         run: |
-          LOG_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          message=":check: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}\n<${LOG_URL}|View in GitHub>\n${{ github.event.pull_request.body }}"
-          payload=$(jq -n --arg channel "#github-notifications" --arg text "$message" '{channel: $channel, text: $text}')
+          title=":check: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
+          body="${{ github.event.pull_request.body }}"
+          log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
+          payload='{"channel": "#github-notifications", "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "plain_text", "text": $log_url } } ]}'
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
       - name: "Slack Notify Failure"
         if: ${{ failure() }}
         run: |
-          LOG_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          message=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}\n<${LOG_URL}|View in GitHub>\nThe deployment failed. Please check the logs for more details."
-          payload=$(jq -n --arg channel "#github-notifications" --arg text "$message" '{channel: $channel, text: $text}')
+          title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
+          body="The deployment failed. Please check the logs for more details."
+          log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
+          payload='{"channel": "#github-notifications", "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "plain_text", "text": $log_url } } ]}'
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
