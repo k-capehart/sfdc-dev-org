@@ -12,6 +12,8 @@ on:
     secrets:
       sfdx_token:
         required: true
+      slack_webhook_url:
+        required: true
 
 jobs:
   deploy-to-salesforce:
@@ -50,7 +52,7 @@ jobs:
           pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           message="${{ github.event.pull_request.body }}"
           payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
-          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
   # we want to send failure notifications for any environment
   slack-notification-failure:
@@ -64,4 +66,4 @@ jobs:
           pretext="<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           message="The deployment failed. Please check the logs for more details."
           payload=$(jq -n --arg channel "#github-notifications" --arg title "$title" --arg pretext "$pretext" --arg text "$message" '{channel: $channel, title: $title, pretext: $pretext, text: $text}')
-          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
