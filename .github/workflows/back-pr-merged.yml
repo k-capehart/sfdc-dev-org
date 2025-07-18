@@ -15,8 +15,8 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
-      from: ${{ github.event.pull_request.base.ref }}
-      to: ${{ github.event.pull_request.head.ref }}
+      from: "HEAD^"
+      to: "HEAD"
 
   deploy-scratch-staging:
     if: github.event.pull_request.base.ref == 'staging' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[BACK PR]')
@@ -25,5 +25,5 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
-      from: ${{ github.event.pull_request.base.ref }}
-      to: ${{ github.event.pull_request.head.ref }}
+      from: "HEAD^"
+      to: "HEAD"
