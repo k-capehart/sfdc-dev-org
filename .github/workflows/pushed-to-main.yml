@@ -15,6 +15,7 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
+      pr_number: ${{ github.event.pull_request.number }}
 
   create-pr-dev:
     needs: deploy-to-prod
