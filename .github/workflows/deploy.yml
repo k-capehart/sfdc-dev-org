@@ -55,6 +55,8 @@ jobs:
           body="${{ github.event.pull_request.body || 'N/A' }}"
           title_escaped=$(echo "$title" | sed 's/"/\&quot;/g; s/'"'"'/\&apos;/g')
           body_escaped=$(echo "$body" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g')
+          echo "title_escaped: $title_escaped"
+          echo "body_escaped: $body_escaped"
           if [ -n "${{ inputs.pr_number }}" ]; then
             log_url="<https://github.com/${{ github.repository }}/pull/${{ inputs.pr_number }}|View in GitHub>"
           else
