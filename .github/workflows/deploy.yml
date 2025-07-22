@@ -9,9 +9,6 @@ on:
       to:
         required: true
         type: string
-      pr_number:
-        required: false
-        type: string
     secrets:
       sfdx_token:
         required: true
@@ -51,12 +48,17 @@ jobs:
         if: success() && github.event.pull_request.base.ref == 'main'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           channel="#github-notifications"
           title=":white_check_mark: Deployment Succeeded"
-          body=$(printf "%s" "$PR_TITLE" | sed 's/"/\\"/g')
-          if [ -n "${{ inputs.pr_number }}" ]; then
-            log_url="<https://github.com/${{ github.repository }}/pull/${{ inputs.pr_number }}|View in GitHub>"
+          if [ -n "$PR_TITLE" ]; then
+            body=$(printf "%s" "$PR_TITLE" | sed 's/"/\\"/g')
+          else
+            body="Salesforce deployment to ${{ github.event.pull_request.base.ref }} completed successfully."
+          fi
+          if [ -n "$PR_NUMBER" ]; then
+            log_url="<https://github.com/${{ github.repository }}/pull/$PR_NUMBER }}|View in GitHub>"
           else
             log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           fi
