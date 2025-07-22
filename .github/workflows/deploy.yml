@@ -51,14 +51,14 @@ jobs:
         if: success() && github.event.pull_request.base.ref == 'main'
         run: |
           channel="#github-notifications"
-          title=$(echo ":white_check_mark: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}" | sed 's/"/\&quot;/g; s/'"'"'/\&apos;/g')
-          body=$(echo "${{ github.event.pull_request.body || 'N/A' }}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g')
+          title=":white_check_mark: Deployment Succeeded"
+          body=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
           if [ -n "${{ inputs.pr_number }}" ]; then
             log_url="<https://github.com/${{ github.repository }}/pull/${{ inputs.pr_number }}|View in GitHub>"
           else
             log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           fi
-          payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "mrkdwn", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
+          payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
       - name: "Slack Notify Failure"
@@ -66,9 +66,9 @@ jobs:
         run: |
           channel="#github-notifications"
           title=$(printf ":x: Deployment Failed (%s): %s" "${{ github.event.pull_request.base.ref }}" "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
-          body="The deployment failed. Please check the logs for more details."
-          log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
-          payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "mrkdwn", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
+          body=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
+          log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs for more details>"
+          payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
 
       - name: "Create Release"
