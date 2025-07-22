@@ -66,7 +66,7 @@ jobs:
         run: |
           channel="#github-notifications"
           title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }})"
-          body=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
+          body=$(printf "%s" "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
           log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs for more details>"
           payload=$(jq -n --arg channel "$channel" --arg title "$title" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "plain_text", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
