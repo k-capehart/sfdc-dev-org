@@ -49,10 +49,12 @@ jobs:
 
       - name: "Slack Notify Success"
         if: success() && github.event.pull_request.base.ref == 'main'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           channel="#github-notifications"
           title=":white_check_mark: Deployment Succeeded"
-          body=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
+          body=$(printf "%s" "$PR_TITLE" | sed 's/"/\\"/g')
           if [ -n "${{ inputs.pr_number }}" ]; then
             log_url="<https://github.com/${{ github.repository }}/pull/${{ inputs.pr_number }}|View in GitHub>"
           else
