@@ -53,7 +53,7 @@ jobs:
           channel="#github-notifications"
           title=":white_check_mark: Deployment Succeeded (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
           body="${{ github.event.pull_request.body || 'N/A' }}"
-          title_escaped=$(echo "$title" | sed 's/"/\&quot;/g; s/'"'"'/\&apos;/g')
+          title_escaped=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g')
           body_escaped=$(echo "$body" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g')
           if [ -n "${{ inputs.pr_number }}" ]; then
             log_url="<https://github.com/${{ github.repository }}/pull/${{ inputs.pr_number }}|View in GitHub>"
@@ -69,7 +69,7 @@ jobs:
           channel="#github-notifications"
           title=":x: Deployment Failed (${{ github.event.pull_request.base.ref }}): ${{ github.event.pull_request.title }}"
           body="The deployment failed. Please check the logs for more details."
-          title_escaped=$(echo "$title" | sed 's/"/\&quot;/g; s/'"'"'/\&apos;/g')
+          title_escaped=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g')
           log_url="<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View in GitHub>"
           payload=$(jq -n --arg channel "$channel" --arg title "$title_escaped" --arg body "$body" --arg log_url "$log_url" '{"channel": $channel, "blocks": [{ "type": "section", "text": { "type": "plain_text", "text": $title }}, { "type": "section", "text": { "type": "mrkdwn", "text": $body } }, { "type": "section", "text": { "type": "mrkdwn", "text": $log_url } } ]}')
           curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.slack_webhook_url }}"
