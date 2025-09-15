@@ -29,7 +29,7 @@ jobs:
       - name: "Run flow lens"
         run: |
           deno run \
-          --allow-read \
+          --allow-read --allow-env \
           jsr:@goog/flow-lens \
           --mode="github_action" \
           --diagramTool="mermaid" \
