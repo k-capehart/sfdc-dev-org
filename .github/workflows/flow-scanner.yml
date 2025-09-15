@@ -42,50 +42,50 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  sfdx-hardis:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: "Checkout source code"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # sfdx-hardis:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write
+  #   steps:
+  #     - name: "Checkout source code"
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: "Install sf cli"
-        run: npm install @salesforce/cli --global
+  #     - name: "Install sf cli"
+  #       run: npm install @salesforce/cli --global
 
-      - name: "Install sfdx-hardis"
-        run: echo y | sf plugins install sfdx-hardis
+  #     - name: "Install sfdx-hardis"
+  #       run: echo y | sf plugins install sfdx-hardis
 
-      - name: "Run flow-diff"
-        run: |
-          sf hardis:project:generate:flow-git-diff \
-            --flow "force-app/main/default/flows/AccountFlow.flow-meta.xml" \
-            --commit-before "${{ github.event.pull_request.base.sha }}" \
-            --commit-after "${{ github.event.pull_request.head.sha }}"
+  #     - name: "Run flow-diff"
+  #       run: |
+  #         sf hardis:project:generate:flow-git-diff \
+  #           --flow "force-app/main/default/flows/AccountFlow.flow-meta.xml" \
+  #           --commit-before "${{ github.event.pull_request.base.sha }}" \
+  #           --commit-after "${{ github.event.pull_request.head.sha }}"
 
-      - name: "Post flow-diffs as comments"
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          DIR="hardis-report/flow-diff"
-          if [ ! -d "$DIR" ]; then
-            echo "Directory $DIR does not exist. Skipping comments."
-            exit 0
-          fi
-          shopt -s nullglob
-          files=("$DIR"/*.md)
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "No markdown files found in $DIR. Skipping comments."
-            exit 0
-          fi
-          REPO="${{ github.repository }}"
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          for file in "${files[@]}"; do
-            echo "Posting comment from $file"
-            gh pr comment "$PR_NUMBER" -R "$REPO" -F "$file"
-          done
+  #     - name: "Post flow-diffs as comments"
+  #       if: ${{ github.event_name == 'pull_request' }}
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       run: |
+  #         set -euo pipefail
+  #         DIR="hardis-report/flow-diff"
+  #         if [ ! -d "$DIR" ]; then
+  #           echo "Directory $DIR does not exist. Skipping comments."
+  #           exit 0
+  #         fi
+  #         shopt -s nullglob
+  #         files=("$DIR"/*.md)
+  #         if [ ${#files[@]} -eq 0 ]; then
+  #           echo "No markdown files found in $DIR. Skipping comments."
+  #           exit 0
+  #         fi
+  #         REPO="${{ github.repository }}"
+  #         PR_NUMBER="${{ github.event.pull_request.number }}"
+  #         for file in "${files[@]}"; do
+  #           echo "Posting comment from $file"
+  #           gh pr comment "$PR_NUMBER" -R "$REPO" -F "$file"
+  #         done
