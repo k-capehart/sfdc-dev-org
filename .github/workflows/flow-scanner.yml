@@ -39,3 +39,5 @@ jobs:
           --diagramTool="mermaid" \
           --gitDiffFromHash="HEAD^1" \
           --gitDiffToHash="HEAD"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
