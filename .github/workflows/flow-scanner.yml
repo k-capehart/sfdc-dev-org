@@ -21,13 +21,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: latest
+
       - name: "Run flow lens"
         run: |
           deno run \
-          --allow-read --allow-write \
+          --allow-read --allow-write --allow-env --allow-run\
           jsr:@goog/flow-lens \
           --mode="github_action" \
           --diagramTool="mermaid" \
           --gitDiffFromHash=${{ github.event.pull_request.base.sha }} \
-          --gitDiffToHash=${{ github.event.pull_request.head.sha }} \
-          --filePath="force-app/main/default/flows/AccountFlow.flow-meta.xml"
+          --gitDiffToHash=${{ github.event.pull_request.head.sha }}
