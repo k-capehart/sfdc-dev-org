@@ -29,9 +29,9 @@ jobs:
       - name: "Run flow lens"
         run: |
           deno run \
-          --allow-read --allow-write --allow-env --allow-run \
+          --allow-read \
           jsr:@goog/flow-lens \
           --mode="github_action" \
           --diagramTool="mermaid" \
-          --gitDiffFromHash=${{ github.event.pull_request.base.sha }} \
-          --gitDiffToHash=${{ github.event.pull_request.head.sha }}
+          --gitDiffFromHash="HEAD^1" \
+          --gitDiffToHash="HEAD"
