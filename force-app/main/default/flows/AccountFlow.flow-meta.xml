@@ -13,6 +13,22 @@
                 <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>SetVar_Again</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SetVar_Again</name>
+        <label>SetVar Again</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Var</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
     </assignments>
     <description>add new description</description>
     <environments>Default</environments>
