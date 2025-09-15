@@ -1,4 +1,4 @@
-name: Scan pull request
+name: Flow Actions
 
 on:
   pull_request:
@@ -10,18 +10,24 @@ on:
       - "force-app/main/default/flows/**"
 
 jobs:
-  scan-pull-request:
+  flow-lens:
     runs-on: ubuntu-latest
-    container:
-      image: salesforce/cli:latest-slim
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: "Checkout source code"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: "Install lightning-flow-scanner"
-        run: echo y | sf plugins install lightning-flow-scanner
-
-      - name: "Run lightning-flow-scanner"
-        run: sf scanner run -e pmd -t . --normalize-severity --severity-threshold 2
+      - name: "Run flow lens"
+        run: |
+          deno run \
+          --allow-read --allow-write \
+          jsr:@goog/flow-lens \
+          --mode="github_action" \
+          --diagramTool="mermaid" \
+          --gitDiffFromHash=${{ github.event.pull_request.base.sha }} \
+          --gitDiffToHash=${{ github.event.pull_request.head.sha }} \
+          --filePath="force-app/main/default/flows/AccountFlow.flow-meta.xml"
