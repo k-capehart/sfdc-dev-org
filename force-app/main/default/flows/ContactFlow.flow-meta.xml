@@ -2,8 +2,8 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
     <assignments>
-        <name>SetVar</name>
-        <label>SetVar</label>
+        <name>Set_Var_to_True</name>
+        <label>Set Var to True</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
@@ -14,10 +14,31 @@
             </value>
         </assignmentItems>
     </assignments>
-    <description>add new description</description>
+    <decisions>
+        <name>isActiveUser</name>
+        <label>isActiveUser</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Test</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$User.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Var_to_True</targetReference>
+            </connector>
+            <label>Active</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
-    <interviewLabel>AccountFlow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>AccountFlow</label>
+    <interviewLabel>ContactFlow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ContactFlow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -41,9 +62,9 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>SetVar</targetReference>
+            <targetReference>isActiveUser</targetReference>
         </connector>
-        <object>Account</object>
+        <object>Contact</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
