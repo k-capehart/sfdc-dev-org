@@ -37,7 +37,7 @@ jobs:
           jsr:@goog/flow-lens \
           --mode="github_action" \
           --diagramTool="mermaid" \
-          --gitDiffFromHash="HEAD^1" \
-          --gitDiffToHash="HEAD"
+          --gitDiffFromHash="${{ github.event.pull_request.base.sha }}" \
+          --gitDiffToHash="${{ github.event.pull_request.head.sha }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
