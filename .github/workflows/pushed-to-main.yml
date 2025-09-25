@@ -13,8 +13,8 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
-      from: "HEAD^"
-      to: "HEAD"
+      from: "${{ github.event.pull_request.head.sha }}"
+      to: "${{ github.event.pull_request.base.sha }}"
 
   create-pr-dev:
     needs: deploy-to-prod
