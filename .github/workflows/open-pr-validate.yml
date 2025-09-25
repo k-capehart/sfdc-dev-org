@@ -28,6 +28,8 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
       branch_name: ${{ github.event.pull_request.base.ref }}
+      from: "${{ github.event.pull_request.head.sha }}"
+      to: "${{ github.event.pull_request.base.sha }}"
 
   validate-sandbox:
     needs: check-if-branch-is-up-to-date
@@ -37,3 +39,5 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
       branch_name: ${{ github.event.pull_request.base.ref }}
+      from: "${{ github.event.pull_request.head.sha }}"
+      to: "${{ github.event.pull_request.base.sha }}"
