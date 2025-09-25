@@ -23,7 +23,6 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
 
       - name: "Install sf cli"
