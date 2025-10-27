@@ -12,6 +12,10 @@ on:
           - staging
           - main
         default: "dev"
+      destructive:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   deploy-prod:
@@ -23,7 +27,7 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
-      destructive: true
+      destructive: ${{ github.event.inputs.destructive }}
 
   deploy-sandbox:
     if: github.event.inputs.target_branch != 'main'
@@ -34,4 +38,4 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
-      destructive: true
+      destructive: ${{ github.event.inputs.destructive }}
