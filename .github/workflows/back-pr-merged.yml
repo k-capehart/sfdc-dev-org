@@ -17,6 +17,7 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
+      destructive: true
 
   deploy-scratch-staging:
     if: github.event.pull_request.base.ref == 'staging' && github.event.pull_request.merged == true && contains(github.event.pull_request.title, '[BACK PR]')
@@ -27,3 +28,4 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
+      destructive: true
