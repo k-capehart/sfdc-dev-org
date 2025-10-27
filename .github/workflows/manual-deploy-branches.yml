@@ -23,6 +23,7 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
+      destructive: true
 
   deploy-sandbox:
     if: github.event.inputs.target_branch != 'main'
@@ -33,3 +34,4 @@ jobs:
     with:
       from: "HEAD^"
       to: "HEAD"
+      destructive: true
