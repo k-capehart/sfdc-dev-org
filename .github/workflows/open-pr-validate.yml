@@ -6,7 +6,6 @@ on:
 
 jobs:
   validate-prod:
-    needs: check-if-branch-is-up-to-date
     if: github.event.pull_request.base.ref == 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
@@ -17,7 +16,6 @@ jobs:
       to: "HEAD"
 
   validate-sandbox:
-    needs: check-if-branch-is-up-to-date
     if: github.event.pull_request.base.ref != 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
@@ -25,4 +23,4 @@ jobs:
     with:
       branch_name: ${{ github.event.pull_request.base.ref }}
       from: "HEAD^"
-      to: "HEAD"z
+      to: "HEAD"
