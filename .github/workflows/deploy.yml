@@ -11,8 +11,8 @@ on:
         type: string
       destructive:
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: "false"
     secrets:
       sfdx_token:
         required: true
@@ -43,7 +43,7 @@ jobs:
         run: |
           if [ `git diff --name-only ${{ inputs.from }} ${{ inputs.to }} force-app/main/default | wc -l` -ne 0 ]; then
             sf sgd source delta --to "${{ inputs.to }}" --from "${{ inputs.from }}" -o "." -i .forceignore
-            if [ "${{ inputs.destructive }}" = true ]; then
+            if [ "${{ inputs.destructive }}" = "true" ]; then
               sf project deploy start -x package/package.xml -w 60 --ignore-conflicts --post-destructive-changes destructiveChanges/destructiveChanges.xml
             else
               if grep -q "<types>" package/package.xml; then
