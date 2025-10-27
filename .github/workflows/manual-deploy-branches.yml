@@ -21,8 +21,9 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
-      from: "origin/${{ github.ref_name }}"
-      to: "origin/${{ github.event.inputs.target_branch }}"
+      from: "HEAD^"
+      to: "HEAD"
+      destructive: true
 
   deploy-sandbox:
     if: github.event.inputs.target_branch != 'main'
@@ -31,5 +32,6 @@ jobs:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
     with:
-      from: "origin/${{ github.ref_name }}"
-      to: "origin/${{ github.event.inputs.target_branch }}"
+      from: "HEAD^"
+      to: "HEAD"
+      destructive: true

@@ -5,35 +5,22 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  check-if-branch-is-up-to-date:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout source code"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check if branch is ahead of base branch
-        run: |
-          if ! git merge-base --is-ancestor origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.sha }}; then
-            echo "This branch is not up to date with ${{ github.event.pull_request.base.ref }}"
-            exit 1
-          fi
-
   validate-prod:
-    needs: check-if-branch-is-up-to-date
     if: github.event.pull_request.base.ref == 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
       branch_name: ${{ github.event.pull_request.base.ref }}
+      from: "HEAD^"
+      to: "HEAD"
 
   validate-sandbox:
-    needs: check-if-branch-is-up-to-date
     if: github.event.pull_request.base.ref != 'main'
     uses: ./.github/workflows/validate.yml
     secrets:
       sfdx_token: ${{ secrets.SFDX_AUTH_URL }}
     with:
       branch_name: ${{ github.event.pull_request.base.ref }}
+      from: "HEAD^"
+      to: "HEAD"
