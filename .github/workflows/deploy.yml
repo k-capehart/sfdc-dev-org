@@ -46,7 +46,11 @@ jobs:
             if [ "${{ inputs.destructive }}" = true ]; then
               sf project deploy start -x package/package.xml -w 60 --ignore-conflicts --post-destructive-changes destructiveChanges/destructiveChanges.xml
             else
-              sf project deploy start -x package/package.xml -w 60 --ignore-conflicts
+              if grep -q "<types>" package/package.xml; then
+                sf project deploy start -x package/package.xml -w 60 --ignore-conflicts
+              else
+                echo "No components found in package.xml - nothing to deploy, treating as success"
+              fi
             fi
           else
             echo "No changes detected in force-app/main/default"
