@@ -24,3 +24,4 @@ jobs:
       branch_name: ${{ github.event.pull_request.base.ref }}
       from: "HEAD^"
       to: "HEAD"
+      destructive: "true"
