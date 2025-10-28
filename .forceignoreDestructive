@@ -1,0 +1,7 @@
+# List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
+# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
+#
+
+# flow deletions are not supported through metadata api: https://help.salesforce.com/s/issue?id=a028c00000gAwixAAC&t=1761659577236
+# possible scripting solution: https://github.com/scolladon/sfdx-git-delta/issues/366#issuecomment-1277754437
+**/flows/**
